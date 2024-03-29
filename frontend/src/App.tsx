@@ -7,7 +7,8 @@ import DBtable from './components/Dbtable';
 import Dbcontents from './pages/Ddcontents';
 import Grid from '@mui/material/Unstable_Grid2';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';  // Import Routes
-import { Link } from 'react-router-dom';
+import Link from '@mui/material/Link';
+
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
 
           <Route path="/" element={
             <>
-              <Link to="/dbcontents">DbContents</Link>
+              <Link href="dbcontents">
+                DbContents
+              </Link>
               <Grid container spacing={4} margin={5}>
                 <DBtable />
               </Grid >

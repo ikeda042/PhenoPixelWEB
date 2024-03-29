@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom';
+import Link from '@mui/material/Link';
 
 
 const columns: GridColDef[] = [
@@ -39,7 +39,7 @@ const rows = [
 export default function Dbcontents() {
     return (
         <div style={{ height: 400, width: '100%' }}>
-            <Link to="/">DbContents</Link>
+            <Link href="/">TOP</Link>
             <DataGrid
                 rows={rows}
                 columns={columns}
