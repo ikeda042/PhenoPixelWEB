@@ -26,9 +26,9 @@ function App() {
 
           <Route path="/" element={
             <>
-              <Link href="dbcontents">
+              {/* <Link href="dbcontents">
                 DbContents
-              </Link>
+              </Link> */}
               <Grid container spacing={4} margin={5}>
                 <DBtable data={data} />
               </Grid >
