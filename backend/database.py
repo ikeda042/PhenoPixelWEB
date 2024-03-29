@@ -25,24 +25,31 @@ class Cell(Base):
 
 engine = create_async_engine(f'sqlite+aiosqlite:///sk326tri120min.db', echo=False)
 
-async def create_tables():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
-async def main():
-
-    await create_tables()
-
+async def get_session():
     async_session = sessionmaker(
         engine, expire_on_commit=False, class_=AsyncSession
     )
-
     async with async_session() as session:
-        result = await session.execute(select(Cell))
-        cells = result.scalars().all()
+        yield session
 
-        for cell in cells:
-            print(cell.manual_label, cell.perimeter, cell.area, cell.center_x, cell.center_y)  
+# async def create_tables():
+#     async with engine.begin() as conn:
+#         await conn.run_sync(Base.metadata.create_all)
 
-import asyncio
-asyncio.run(main())
+# async def main():
+
+#     await create_tables()
+
+#     async_session = sessionmaker(
+#         engine, expire_on_commit=False, class_=AsyncSession
+#     )
+
+#     async with async_session() as session:
+#         result = await session.execute(select(Cell))
+#         cells = result.scalars().all()
+
+#         for cell in cells:
+#             print(cell.manual_label, cell.perimeter, cell.area, cell.center_x, cell.center_y)  
+
+
+
