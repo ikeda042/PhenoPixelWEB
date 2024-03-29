@@ -4,12 +4,13 @@ import aiofiles.os as aos
 import asyncio
 import os
 from schemas import DBInfo, CellDB
-from database import count_valid_cells, get_cells, get_cell_ph, get_cell_fluo
+from database import count_valid_cells, get_cells, get_cell_ph, get_cell_fluo, get_cell_contour
 from fastapi.middleware.cors import CORSMiddleware
 import cv2
 import numpy as np
 from fastapi.responses import StreamingResponse
 import aiofiles
+import pickle
 
 
 app = FastAPI(docs_url="/docs")
@@ -73,6 +74,17 @@ async def read_cell_fluo5(db_name: str, cell_id: str):
     return StreamingResponse(open("temp_fluo5.png", "rb"), media_type="image/png")
 
     
+@router_cell.get("/cells/{db_name}/cell/{cell_id}/fluocontour")
+async def read_cell_fluo5(db_name: str, cell_id: str):
+    cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
+    image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
+    contour = await get_cell_contour(f"./databases/{db_name}.db", cell_id)
+    cv2.drawContours(image_fluo,pickle.loads(contour),-1,(0,255,0),1)
+    _, buffer = cv2.imencode(".png", image_fluo)
+    async with aiofiles.open("temp_fluocontour.png", "wb") as afp:
+        await afp.write(buffer)
+    return StreamingResponse(open("temp_fluocontour.png", "rb"), media_type="image/png")
+
 
 app.include_router(router_cell)
 
