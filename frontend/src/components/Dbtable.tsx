@@ -29,7 +29,6 @@ export default function DBtable({ data }: DBTableProps) {
     return (
         <DataGrid
             rows={data.map((row, index) => {
-
                 const matchResult = row.file_name.match(/tri(\d+)min/);
                 const exposure_time = Number(matchResult?.[1] ?? 0);
                 return {
@@ -41,7 +40,6 @@ export default function DBtable({ data }: DBTableProps) {
                 };
             })}
             columns={columns}
-            checkboxSelection
             disableRowSelectionOnClick
             hideFooterPagination
         />
