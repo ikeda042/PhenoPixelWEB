@@ -10,13 +10,23 @@ import { Box } from '@mui/system';
 import Grid from '@mui/material/Unstable_Grid2';
 
 
+type RowData = {
+    cell_id: string;
+    label_experiment: string;
+    manual_label: number;
+    perimeter: number;
+    area: number;
+    [key: string]: string | number;
+};
+
+
 
 const convertToCSV = (objArray: RowData[]): string => {
     const array = Array.isArray(objArray) ? objArray : JSON.parse(objArray);
-    let str = `${Object.keys(array[0]).map(value => `"${value}"`).join(",")}\r\n`;
+    let str = `${columns.map(({ headerName }) => `"${headerName}"`).join(",")}\r\n`;
 
     return array.reduce((str: string, next: RowData) => {
-        str += `${Object.values(next).map(value => `"${value}"`).join(",")}\r\n`;
+        str += `${columns.map(({ field }) => `"${next[field]}"`).join(",")}\r\n`;
         return str;
     }, str);
 };
@@ -31,13 +41,6 @@ const downloadCSV = (csvContent: string, fileName: string): void => {
     document.body.removeChild(link);
 };
 
-type RowData = {
-    cell_id: string;
-    label_experiment: string;
-    manual_label: number;
-    perimeter: number;
-    area: number;
-};
 
 
 
@@ -45,8 +48,8 @@ const columns: GridColDef[] = [
     { field: 'cell_id', headerName: 'Cell ID', width: 200, align: 'center', headerAlign: 'center' },
     { field: 'label_experiment', headerName: 'Label Experiment', width: 200, align: 'center', headerAlign: 'center' },
     { field: 'manual_label', headerName: 'Manual Label', width: 200, align: 'center', headerAlign: 'center' },
-    { field: 'perimeter (µm)', headerName: 'Perimeter(µm)', width: 200, align: 'center', headerAlign: 'center' },
-    { field: 'area (µm^2)', headerName: 'Area (µm^2)', width: 200, align: 'center', headerAlign: 'center' }
+    { field: 'perimeter', headerName: 'Perimeter (µm)', width: 200, align: 'center', headerAlign: 'center' },
+    { field: 'area', headerName: 'Area (µm^2)', width: 200, align: 'center', headerAlign: 'center' }
 ];
 
 
@@ -70,13 +73,13 @@ export default function Dbcontents() {
 
     return (
         <div style={{ height: 700, width: '100%' }}>
-            <Link href="/">TOP</Link>
 
-            <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center"  >
+
+            <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" margin={5}  >
                 <Typography variant="h4" component="h2" gutterBottom>
                     {filename}
                 </Typography>
-                <Button variant="contained" onClick={handleExport} style={{ backgroundColor: 'black', marginRight: "40px" }} >
+                <Button variant="contained" onClick={handleExport} style={{ marginRight: "5px" }} >
                     CSV出力
                 </Button>
             </Box>
