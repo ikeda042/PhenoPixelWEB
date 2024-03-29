@@ -11,6 +11,13 @@ import Link from '@mui/material/Link';
 
 
 function App() {
+  const data = [
+    {
+      "file_name": "sk326tri120min.db",
+      "cell_count": 54
+    },
+
+  ];
   return (
     <Router>
       <Box sx={{ bgcolor: "#f7f6f5", color: 'black', minHeight: '100vh' }}>
@@ -23,7 +30,7 @@ function App() {
                 DbContents
               </Link>
               <Grid container spacing={4} margin={5}>
-                <DBtable />
+                <DBtable data={data} />
               </Grid >
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
                 <SquareImage imgSrc="testimg.png" size={400} />
