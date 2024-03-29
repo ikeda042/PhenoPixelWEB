@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.future import select
+from schemas import CellDB
 
 Base = declarative_base()
 
@@ -32,37 +33,16 @@ async def get_session(dbname:str):
     async with async_session() as session:
         yield session
 
-async def get_cells():
-    async for session in get_session():
-        result = await session.execute(select(Cell))
+
+async def get_cells(dbname:str) -> list[CellDB]:
+    async for session in get_session(dbname=dbname):
+        result = await session.execute(select(Cell).where(Cell.manual_label =="1"))
         cells = result.scalars().all()
-        return cells
+    await session.close()
+    return [CellDB(cell_id=cell.cell_id, label_experiment=cell.label_experiment, manual_label=cell.manual_label, perimeter=cell.perimeter, area=cell.area) for cell in cells]
 
 async def count_valid_cells(db_name:str) -> int:
     async for session in get_session(db_name):
         result = await session.execute(select(Cell).where(Cell.manual_label =="1"))
         cells = result.scalars().all()
         return len(cells)
-
-
-# async def create_tables():
-#     async with engine.begin() as conn:
-#         await conn.run_sync(Base.metadata.create_all)
-
-# async def main():
-
-#     await create_tables()
-
-#     async_session = sessionmaker(
-#         engine, expire_on_commit=False, class_=AsyncSession
-#     )
-
-#     async with async_session() as session:
-#         result = await session.execute(select(Cell))
-#         cells = result.scalars().all()
-
-#         for cell in cells:
-#             print(cell.manual_label, cell.perimeter, cell.area, cell.center_x, cell.center_y)  
-
-
-
