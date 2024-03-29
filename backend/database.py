@@ -39,7 +39,7 @@ async def get_cells(dbname:str) -> list[CellDB]:
         result = await session.execute(select(Cell).where(Cell.manual_label =="1"))
         cells = result.scalars().all()
     await session.close()
-    return [CellDB(cell_id=cell.cell_id, label_experiment=cell.label_experiment, manual_label=cell.manual_label, perimeter=cell.perimeter, area=cell.area) for cell in cells]
+    return [CellDB(cell_id=cell.cell_id, label_experiment=cell.label_experiment, manual_label=cell.manual_label, perimeter=round(cell.perimeter,2), area=cell.area) for cell in cells]
 
 async def count_valid_cells(db_name:str) -> int:
     async for session in get_session(db_name):
