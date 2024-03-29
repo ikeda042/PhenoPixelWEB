@@ -72,14 +72,14 @@ export default function Dbcontents() {
             <Typography variant="h4" component="h2" gutterBottom>
                 {filename}
             </Typography>
-            <Button variant="contained" onClick={handleExport} style={{ marginBottom: '10px' }}>
-                Export to CSV
+            <Button variant="contained" onClick={handleExport} style={{ marginBottom: '10px', backgroundColor: 'black' }}>
+                CSV出力
             </Button>
             <DataGrid
                 rows={rows}
                 columns={columns}
                 hideFooterPagination
             />
-        </div>
+        </div >
     );
 }
