@@ -17,7 +17,7 @@ class Cell(Base):
     area = Column(FLOAT)
     img_ph = Column(BLOB) 
     img_fluo1 = Column(BLOB)
-    img_fluo2 = Column(BLOB,nullable=True)
+    img_fluo2 = Column(BLOB,nullable=True) | None
     contour = Column(BLOB)
     center_x = Column(FLOAT)
     center_y = Column(FLOAT)
