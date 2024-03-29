@@ -19,7 +19,7 @@ interface Props {
 }
 
 const drawerWidth = 240;
-const navItems = [""]; // ナビゲーション項目の例
+const navItems = [""];
 
 export default function Nav(props: Props) {
     const { window } = props;
