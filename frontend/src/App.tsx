@@ -9,8 +9,12 @@ function App() {
   return (
     <>
       <Box sx={{ bgcolor: "#f7f6f5", color: 'black', minHeight: '100vh' }}>
+
         <Nav />
-        <DBtable />
+        <Grid container spacing={4} margin={5}>
+          <DBtable />
+        </Grid >
+
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
           <SquareImage imgSrc="testimg.png" size={400} />
         </Box>

@@ -50,16 +50,9 @@ export default function DBtable() {
             <DataGrid
                 rows={rows}
                 columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: {
-                            pageSize: 5,
-                        },
-                    },
-                }}
-                pageSizeOptions={[5]}
                 checkboxSelection
                 disableRowSelectionOnClick
+                hideFooterPagination
             />
         </Box>
     );
