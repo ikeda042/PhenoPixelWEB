@@ -23,9 +23,9 @@ class Cell(Base):
     center_y = Column(FLOAT)
 
 
-engine = create_async_engine(f'sqlite+aiosqlite:///sk326tri120min.db', echo=False)
 
-async def get_session():
+async def get_session(dbname:str):
+    engine = create_async_engine(f'sqlite+aiosqlite:///{dbname}', echo=False)
     async_session = sessionmaker(
         engine, expire_on_commit=False, class_=AsyncSession
     )
@@ -37,6 +37,12 @@ async def get_cells():
         result = await session.execute(select(Cell))
         cells = result.scalars().all()
         return cells
+
+async def count_valid_cells(db_name:str) -> int:
+    async for session in get_session(db_name):
+        result = await session.execute(select(Cell).where(Cell.manual_label =="1"))
+        cells = result.scalars().all()
+        return len(cells)
 
 
 # async def create_tables():

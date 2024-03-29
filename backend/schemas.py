@@ -2,5 +2,6 @@ from pydantic import BaseModel
 
 
 
-class DBname(BaseModel):
-    name: str
+class DBInfo(BaseModel):
+    file_name: str
+    cell_count: int
