@@ -38,7 +38,7 @@ function App() {
             </>
           } />
 
-          <Route path="/dbcontents" element={<Dbcontents />} />
+          <Route path="/dbcontents/:filename" element={<Dbcontents />} />
         </Routes>
       </Box >
     </Router>

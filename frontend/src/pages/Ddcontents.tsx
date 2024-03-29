@@ -2,6 +2,8 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Link from '@mui/material/Link';
+import { Typography } from '@mui/material';
+import { useParams } from 'react-router-dom';
 
 
 const columns: GridColDef[] = [
@@ -37,9 +39,15 @@ const rows = [
 ];
 
 export default function Dbcontents() {
+
+    const { filename } = useParams();
+
     return (
         <div style={{ height: 400, width: '100%' }}>
             <Link href="/">TOP</Link>
+            <Typography variant="h4" component="h2" gutterBottom>
+                {filename}
+            </Typography>
             <DataGrid
                 rows={rows}
                 columns={columns}

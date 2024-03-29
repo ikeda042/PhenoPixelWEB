@@ -1,17 +1,22 @@
 import { Box } from '@mui/system';
 import { DataGrid } from '@mui/x-data-grid';
-import { useNavigate } from 'react-router-dom';
+import { GridRenderCellParams } from '@mui/x-data-grid';
+import Link from '@mui/material/Link';
 
 interface DBTableProps {
     data: { file_name: string; cell_count: number }[];
 }
 
 export default function DBtable({ data }: DBTableProps) {
-    const navigate = useNavigate();
 
     const columns = [
         {
-            field: 'file_name', headerName: 'File Name', width: 200
+            field: 'file_name',
+            headerName: 'File Name',
+            width: 200,
+            renderCell: (params: GridRenderCellParams) =>
+                <Link href={`/dbcontents/${(params.value as string).split('.')[0]}`}>{(params.value as string).split('.')[0]}</Link>,
+
         },
         { field: 'cell_count', headerName: 'Cell Count', width: 200 },
         { field: 'antibiotics', headerName: 'Antibiotics', width: 200 },
@@ -37,11 +42,6 @@ export default function DBtable({ data }: DBTableProps) {
             checkboxSelection
             disableRowSelectionOnClick
             hideFooterPagination
-            onCellClick={(params, event) => {
-                if (params.field === 'file_name') {
-                    navigate(`/dbcontents/:${params.value}`);
-                }
-            }}
         />
     );
 }
