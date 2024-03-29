@@ -52,6 +52,17 @@ async def read_cell_ph(db_name: str, cell_id: str):
         await afp.write(buffer)
     return StreamingResponse(open("temp.png", "rb"), media_type="image/png")
 
+@router_cell.get("/cells/{db_name}/cell/{cell_id}/phcontour")
+async def read_cell_ph_contour(db_name: str, cell_id: str):
+    cell: bytes = await get_cell_ph(f"./databases/{db_name}.db", cell_id)
+    image_ph = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
+    contour = await get_cell_contour(f"./databases/{db_name}.db", cell_id)
+    cv2.drawContours(image_ph,pickle.loads(contour),-1,(0,255,0),1)
+    _, buffer = cv2.imencode(".png", image_ph)
+    async with aiofiles.open("temp_phcontour.png", "wb") as afp:
+        await afp.write(buffer)
+    return StreamingResponse(open("temp_phcontour.png", "rb"), media_type="image/png")
+
 
 @router_cell.get("/cells/{db_name}/cell/{cell_id}/fluo")
 async def read_cell_fluo(db_name: str, cell_id: str):
@@ -75,7 +86,7 @@ async def read_cell_fluo5(db_name: str, cell_id: str):
 
     
 @router_cell.get("/cells/{db_name}/cell/{cell_id}/fluocontour")
-async def read_cell_fluo5(db_name: str, cell_id: str):
+async def read_cell_fluo_contour(db_name: str, cell_id: str):
     cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
     image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
     contour = await get_cell_contour(f"./databases/{db_name}.db", cell_id)

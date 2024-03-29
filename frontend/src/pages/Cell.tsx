@@ -24,13 +24,13 @@ export default function Cell() {
 
     return (
         <div style={{ height: 700, width: '100%' }}>
-            <Typography variant="h4" align="center" gutterBottom>
+            <Typography variant="h6" align="center" gutterBottom>
                 Cell ID: {cellId}
             </Typography>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
 
-                <Stack direction="row" spacing={3}>
+                <Stack direction="column" spacing={3}>
                     <ToggleButtonGroup
                         value={view}
                         exclusive
@@ -39,6 +39,9 @@ export default function Cell() {
                     >
                         <ToggleButton value="ph" aria-label="ph">
                             PH
+                        </ToggleButton>
+                        <ToggleButton value="phcontour" aria-label="phcontour">
+                            PH + Con.
                         </ToggleButton>
                         <ToggleButton value="fluo" aria-label="fluo">
                             FLUO
@@ -55,7 +58,7 @@ export default function Cell() {
                     </ToggleButtonGroup>
                 </Stack>
                 <br></br>
-                <SquareImage imgSrc={imageUrl} size={400} />
+                <SquareImage imgSrc={imageUrl} size={500} />
             </Box>
         </div>
     );
