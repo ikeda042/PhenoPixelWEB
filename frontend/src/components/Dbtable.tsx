@@ -18,7 +18,6 @@ export default function DBtable({ data }: DBTableProps) {
             headerAlign: 'center',
             renderCell: (params: GridRenderCellParams) =>
                 <Link href={`/dbcontents/${(params.value as string).split('.')[0]}`}>{(params.value as string).split('.')[0]}</Link>,
-
         },
         { field: 'cell_count', headerName: 'Cell Count', width: 200, align: 'center', headerAlign: 'center' },
         { field: 'antibiotics', headerName: 'Antibiotics', width: 200, align: 'center', headerAlign: 'center' },
