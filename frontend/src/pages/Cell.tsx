@@ -29,7 +29,6 @@ export default function Cell() {
             </Typography>
 
             <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-
                 <Stack direction="column" spacing={3}>
                     <ToggleButtonGroup
                         value={view}
