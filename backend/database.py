@@ -32,6 +32,13 @@ async def get_session():
     async with async_session() as session:
         yield session
 
+async def get_cells():
+    async for session in get_session():
+        result = await session.execute(select(Cell))
+        cells = result.scalars().all()
+        return cells
+
+
 # async def create_tables():
 #     async with engine.begin() as conn:
 #         await conn.run_sync(Base.metadata.create_all)
