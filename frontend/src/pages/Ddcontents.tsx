@@ -6,6 +6,9 @@ import { Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
+import { Box } from '@mui/system';
+import Grid from '@mui/material/Unstable_Grid2';
+
 
 
 const convertToCSV = (objArray: RowData[]): string => {
@@ -66,20 +69,24 @@ export default function Dbcontents() {
     }, [filename]);
 
     return (
-
         <div style={{ height: 700, width: '100%' }}>
             <Link href="/">TOP</Link>
-            <Typography variant="h4" component="h2" gutterBottom>
-                {filename}
-            </Typography>
-            <Button variant="contained" onClick={handleExport} style={{ marginBottom: '10px', backgroundColor: 'black' }}>
-                CSV出力
-            </Button>
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                hideFooterPagination
-            />
-        </div >
+
+            <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center"  >
+                <Typography variant="h4" component="h2" gutterBottom>
+                    {filename}
+                </Typography>
+                <Button variant="contained" onClick={handleExport} style={{ backgroundColor: 'black', marginRight: "40px" }} >
+                    CSV出力
+                </Button>
+            </Box>
+            <Grid container spacing={4} margin={5}>
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    hideFooterPagination
+                />
+            </Grid>
+        </div>
     );
 }
