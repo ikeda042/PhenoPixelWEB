@@ -35,8 +35,8 @@ export default function Nav(props: Props) {
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
-                Cell API
+            <Typography variant="h3" sx={{ my: 2 }}>
+                Cell APIs
             </Typography>
             <Divider />
             <List>
@@ -68,11 +68,11 @@ export default function Nav(props: Props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography
-                        variant="h6"
+                        variant="h5"
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                     >
-                        Cell API
+                        細胞データベース管理システム
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {navItems.map((item) => (
