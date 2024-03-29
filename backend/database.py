@@ -42,7 +42,7 @@ async def main():
         cells = result.scalars().all()
 
         for cell in cells:
-            print(cell.cell_id)  
+            print(cell.manual_label, cell.perimeter, cell.area, cell.center_x, cell.center_y)  
 
 import asyncio
 asyncio.run(main())
