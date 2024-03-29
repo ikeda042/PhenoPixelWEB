@@ -8,7 +8,7 @@ import Dbcontents from './pages/Ddcontents';
 import Grid from '@mui/material/Unstable_Grid2';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';  // Import Routes
 import React, { useEffect, useState } from 'react';
-
+import Cell from './pages/Cell'
 
 
 function App() {
@@ -41,6 +41,7 @@ function App() {
           } />
 
           <Route path="/dbcontents/:filename" element={<Dbcontents />} />
+          <Route path="/dbcontents/:filename/cell/:cellId" element={<Cell />} />
         </Routes>
       </Box >
     </Router>
