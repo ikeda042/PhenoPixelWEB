@@ -14,14 +14,16 @@ export default function DBtable({ data }: DBTableProps) {
             field: 'file_name',
             headerName: 'Database name',
             width: 250,
+            align: 'center',
+            headerAlign: 'center',
             renderCell: (params: GridRenderCellParams) =>
                 <Link href={`/dbcontents/${(params.value as string).split('.')[0]}`}>{(params.value as string).split('.')[0]}</Link>,
 
         },
-        { field: 'cell_count', headerName: 'Cell Count', width: 200, align: 'center' },
-        { field: 'antibiotics', headerName: 'Antibiotics', width: 200 },
-        { field: 'exposure_time', headerName: 'Exposure time (min)', width: 200 },
-        { field: 'strain_code', headerName: 'Strain code', width: 200 }
+        { field: 'cell_count', headerName: 'Cell Count', width: 200, align: 'center', headerAlign: 'center' },
+        { field: 'antibiotics', headerName: 'Antibiotics', width: 200, align: 'center', headerAlign: 'center' },
+        { field: 'exposure_time', headerName: 'Exposure time (min)', width: 200, align: 'center', headerAlign: 'center' },
+        { field: 'strain_code', headerName: 'Strain code', width: 200, align: 'center', headerAlign: 'center' }
     ];
 
     return (
