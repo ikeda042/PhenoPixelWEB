@@ -29,8 +29,7 @@ export default function Cell() {
             </Typography>
 
             <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-                <SquareImage imgSrc={imageUrl} size={400} />
-                <br></br>
+
                 <Stack direction="row" spacing={3}>
                     <ToggleButtonGroup
                         value={view}
@@ -44,6 +43,9 @@ export default function Cell() {
                         <ToggleButton value="fluo" aria-label="fluo">
                             FLUO
                         </ToggleButton>
+                        <ToggleButton value="fluocontour" aria-label="fluocontour">
+                            FLUO+Con.
+                        </ToggleButton>
                         <ToggleButton value="fluox5" aria-label="fluox5">
                             FLUO x5
                         </ToggleButton>
@@ -52,6 +54,8 @@ export default function Cell() {
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Stack>
+                <br></br>
+                <SquareImage imgSrc={imageUrl} size={400} />
             </Box>
         </div>
     );
