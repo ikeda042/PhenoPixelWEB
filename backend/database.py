@@ -59,3 +59,9 @@ async def get_cell_fluo(db_name:str, cell_id:str) -> bytes:
         result = await session.execute(select(Cell).where(Cell.cell_id == cell_id))
         cell = result.scalars().first()
         return cell.img_fluo1
+
+async def get_cell_contour(db_name:str, cell_id:str) -> bytes:
+    async for session in get_session(db_name):
+        result = await session.execute(select(Cell).where(Cell.cell_id == cell_id))
+        cell = result.scalars().first()
+        return cell.contour
