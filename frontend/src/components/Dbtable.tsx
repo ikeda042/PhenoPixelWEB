@@ -1,6 +1,6 @@
 import { Box } from '@mui/system';
 import { DataGrid } from '@mui/x-data-grid';
-import { GridRenderCellParams } from '@mui/x-data-grid';
+import { GridRenderCellParams, GridColDef } from '@mui/x-data-grid';
 import Link from '@mui/material/Link';
 
 interface DBTableProps {
@@ -9,7 +9,7 @@ interface DBTableProps {
 
 export default function DBtable({ data }: DBTableProps) {
 
-    const columns = [
+    const columns: GridColDef[] = [
         {
             field: 'file_name',
             headerName: 'Database name',
@@ -18,7 +18,7 @@ export default function DBtable({ data }: DBTableProps) {
                 <Link href={`/dbcontents/${(params.value as string).split('.')[0]}`}>{(params.value as string).split('.')[0]}</Link>,
 
         },
-        { field: 'cell_count', headerName: 'Cell Count', width: 200 },
+        { field: 'cell_count', headerName: 'Cell Count', width: 200, align: 'center' },
         { field: 'antibiotics', headerName: 'Antibiotics', width: 200 },
         { field: 'exposure_time', headerName: 'Exposure time (min)', width: 200 },
         { field: 'strain_code', headerName: 'Strain code', width: 200 }
