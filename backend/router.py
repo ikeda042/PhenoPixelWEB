@@ -5,10 +5,19 @@ import asyncio
 import os
 from schemas import DBInfo
 from database import count_valid_cells
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI(docs_url="/docs")
 router_cell = APIRouter(prefix="/cellapi")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 @app.get("/")
 async def root():
