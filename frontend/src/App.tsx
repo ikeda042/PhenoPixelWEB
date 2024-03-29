@@ -1,4 +1,4 @@
-import React from 'react';
+
 import './App.css';
 import Nav from './components/Nav';
 import { Box } from '@mui/system';
@@ -7,17 +7,19 @@ import DBtable from './components/Dbtable';
 import Dbcontents from './pages/Ddcontents';
 import Grid from '@mui/material/Unstable_Grid2';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';  // Import Routes
-import Link from '@mui/material/Link';
+import React, { useEffect, useState } from 'react';
+
 
 
 function App() {
-  const data = [
-    {
-      "file_name": "sk326tri120min.db",
-      "cell_count": 54
-    },
+  const [data, setData] = useState([]);
 
-  ];
+  useEffect(() => {
+    fetch('http://10.32.17.15:8000/cellapi/cells/databases')
+      .then(response => response.json())
+      .then(data => setData(data));
+  }, []);
+
   return (
     <Router>
       <Box sx={{ bgcolor: "#f7f6f5", color: 'black', minHeight: '100vh' }}>
