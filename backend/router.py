@@ -4,7 +4,7 @@ import aiofiles.os as aos
 import asyncio
 import os
 from schemas import DBInfo, CellDB
-from database import count_valid_cells, get_cells, get_cell
+from database import count_valid_cells, get_cells, get_cell_ph, get_cell_fluo
 from fastapi.middleware.cors import CORSMiddleware
 import cv2
 import numpy as np
@@ -44,7 +44,7 @@ async def read_cell_dbs():
 
 @router_cell.get("/cells/{db_name}/cell/{cell_id}/ph")
 async def read_cell_ph(db_name: str, cell_id: str):
-    cell: bytes = await get_cell(f"./databases/{db_name}.db", cell_id)
+    cell: bytes = await get_cell_ph(f"./databases/{db_name}.db", cell_id)
     image_ph = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
     _, buffer = cv2.imencode(".png", image_ph)
     async with aiofiles.open("temp.png", "wb") as afp:
@@ -52,7 +52,25 @@ async def read_cell_ph(db_name: str, cell_id: str):
     return StreamingResponse(open("temp.png", "rb"), media_type="image/png")
 
 
+@router_cell.get("/cells/{db_name}/cell/{cell_id}/fluo")
+async def read_cell_fluo(db_name: str, cell_id: str):
+    cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
+    image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
+    _, buffer = cv2.imencode(".png", image_fluo)
+    async with aiofiles.open("temp_fluo.png", "wb") as afp:
+        await afp.write(buffer)
+    return StreamingResponse(open("temp_fluo.png", "rb"), media_type="image/png")
 
+
+@router_cell.get("/cells/{db_name}/cell/{cell_id}/fluox5")
+async def read_cell_fluo5(db_name: str, cell_id: str):
+    cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
+    image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
+    image_fluo = cv2.convertScaleAbs(image_fluo, alpha=5, beta=0)
+    _, buffer = cv2.imencode(".png", image_fluo)
+    async with aiofiles.open("temp_fluo5.png", "wb") as afp:
+        await afp.write(buffer)
+    return StreamingResponse(open("temp_fluo5.png", "rb"), media_type="image/png")
 
     
 
