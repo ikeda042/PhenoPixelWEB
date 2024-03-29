@@ -21,11 +21,14 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
+    print("Hello World")
     return {"message": "Hello World"}
 
 @router_cell.get("/cells/databases/{db_name}", response_model=list[CellDB])
 async def read_cell_db(db_name: str):
-    return await get_cells(f"./databases/{db_name}")
+    print(db_name)
+    print(f"./databases/{db_name}++++++++++++++++++++++++++++++++++++++")
+    return await get_cells(f"./databases/{db_name}.db")
 
 @router_cell.get("/cells/databases", response_model=list[DBInfo])
 async def read_cell_dbs():

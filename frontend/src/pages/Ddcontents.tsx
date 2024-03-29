@@ -19,7 +19,7 @@ export default function Dbcontents() {
     const [rows, setRows] = React.useState([]);
 
     React.useEffect(() => {
-        fetch(`/cells/databases/${filename}`)
+        fetch(`http://10.32.17.15:8000/cellapi/cells/databases/${filename}`)
             .then(response => response.json())
             .then(data => setRows(data));
     }, [filename]);
