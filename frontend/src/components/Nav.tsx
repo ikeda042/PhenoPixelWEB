@@ -23,7 +23,7 @@ interface Props {
 }
 
 const drawerWidth = 10;
-const navItems = ['Works', 'Contact'];
+const navItems = [""];
 
 export default function Nav(props: Props) {
     const { window } = props;
