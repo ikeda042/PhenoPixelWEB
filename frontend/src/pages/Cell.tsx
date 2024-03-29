@@ -23,7 +23,6 @@ export default function Cell() {
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
                 <SquareImage imgSrc={imageUrl} size={400} />
             </Box>
-
         </div>
 
     );
