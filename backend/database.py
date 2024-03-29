@@ -2,6 +2,8 @@ import asyncio
 from sqlalchemy import Column, Integer, String, BLOB, FLOAT
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.future import select
 
 Base = declarative_base()
 
@@ -20,11 +22,6 @@ class Cell(Base):
     center_x = Column(FLOAT)
     center_y = Column(FLOAT)
 
-
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.future import select
 
 engine = create_async_engine(f'sqlite+aiosqlite:///sk326tri120min.db', echo=False)
 
