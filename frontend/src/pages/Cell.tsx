@@ -35,15 +35,16 @@ export default function Cell() {
                         exclusive
                         onChange={handleView}
                         aria-label="view"
+                        size='large'
                     >
                         <ToggleButton value="ph" aria-label="ph">
                             PH
                         </ToggleButton>
-                        <ToggleButton value="phcontour" aria-label="phcontour">
-                            PH + Con.
-                        </ToggleButton>
                         <ToggleButton value="fluo" aria-label="fluo">
                             FLUO
+                        </ToggleButton>
+                        <ToggleButton value="phcontour" aria-label="phcontour">
+                            PH + Con.
                         </ToggleButton>
                         <ToggleButton value="fluocontour" aria-label="fluocontour">
                             FLUO+Con.

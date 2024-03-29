@@ -11,6 +11,7 @@ import numpy as np
 from fastapi.responses import StreamingResponse
 import aiofiles
 import pickle
+import matplotlib.pyplot as plt
 
 
 app = FastAPI(docs_url="/docs")
@@ -96,7 +97,22 @@ async def read_cell_fluo_contour(db_name: str, cell_id: str):
         await afp.write(buffer)
     return StreamingResponse(open("temp_fluocontour.png", "rb"), media_type="image/png")
 
+@router_cell.get("/cells/{db_name}/cell/{cell_id}/replot")
+async def replot(db_name: str, cell_id: str):
+    cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
+    image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
+    gray = cv2.cvtColor(image_fluo, cv2.COLOR_BGR2GRAY)
+    contour = await get_cell_contour(f"./databases/{db_name}.db", cell_id)
+    
+    mask = np.zeros_like(gray)
 
+    # Draw the contour on the mask
+    cv2.drawContours(mask, [contour], -1, (255), thickness=cv2.FILLED)
+
+    # Get the coordinates where the mask is non-zero
+    y, x = np.where(mask)
+
+    print(x, y)
 app.include_router(router_cell)
 
 if __name__ == "__main__":
