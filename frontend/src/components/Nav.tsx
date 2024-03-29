@@ -20,7 +20,7 @@ interface Props {
 }
 
 const drawerWidth = 240;
-const navItems = ["ホーム", "その他の項目"]; // ナビゲーション項目の例
+const navItems = [""]; // ナビゲーション項目の例
 
 export default function Nav(props: Props) {
     const { window } = props;
@@ -56,7 +56,7 @@ export default function Nav(props: Props) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar component="nav">
+            <AppBar component="nav" sx={{ backgroundColor: '#000' }}>
                 <Toolbar>
                     <IconButton
                         color="inherit"
