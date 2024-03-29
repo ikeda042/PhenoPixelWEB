@@ -10,7 +10,8 @@ export default function DBtable({ data }: DBTableProps) {
         { field: 'file_name', headerName: 'File Name', width: 200 },
         { field: 'cell_count', headerName: 'Cell Count', width: 200 },
         { field: 'antibiotics', headerName: 'Antibiotics', width: 200 },
-        { field: 'exposure_time', headerName: 'Exposure time (min)', width: 200 }
+        { field: 'exposure_time', headerName: 'Exposure time (min)', width: 200 },
+        { field: 'strain_code', headerName: 'Strain code', width: 200 }
     ];
 
     return (
@@ -24,6 +25,7 @@ export default function DBtable({ data }: DBTableProps) {
                     ...row,
                     antibiotics: row.file_name.includes('tri') ? 'Triclosan' : row.file_name,
                     exposure_time: exposure_time,
+                    strain_code: Number(row.file_name.match(/\d+/)?.[0] ?? 0)
                 };
             })}
             columns={columns}
