@@ -34,9 +34,6 @@ function App() {
               <Grid container spacing={4} margin={5}>
                 <DBtable data={data} />
               </Grid >
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-                <SquareImage imgSrc="testimg.png" size={400} />
-              </Box>
             </>
           } />
 
