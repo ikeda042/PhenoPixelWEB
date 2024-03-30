@@ -13,6 +13,8 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import BallotIcon from '@mui/icons-material/Ballot';
+
 
 interface Props {
     window?: () => Window;
@@ -69,6 +71,8 @@ export default function Nav(props: Props) {
                     {/* AppBar内のタイトルもLinkでラップ可能 */}
                     <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                            <Box component={BallotIcon} sx={{ marginRight: 1 }} />  {/* Add the icon here */}
+                            抗生物質添加培養データベース管理システム
                             抗生物質添加培養データベース管理システム
                         </Typography>
                     </Link>
