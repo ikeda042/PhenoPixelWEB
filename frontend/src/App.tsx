@@ -9,6 +9,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';  // Import Routes
 import React, { useEffect, useState } from 'react';
 import Cell from './pages/Cell'
+import DbcontentsOverview from './pages/Cellsoverview';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
 
           <Route path="/dbcontents/:filename" element={<Dbcontents />} />
           <Route path="/dbcontents/:filename/cell/:cellId" element={<Cell />} />
+          <Route path="/dbcontents/:filename/overview" element={<DbcontentsOverview />} />
         </Routes>
       </Box >
     </Router>
