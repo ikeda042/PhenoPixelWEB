@@ -11,13 +11,19 @@ import Grid from '@mui/material/Unstable_Grid2';
 import SquareImage from '../components/Squareimage';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Stack } from '@mui/material';
+import { FormControlLabel, Checkbox } from '@mui/material';
 
 export default function Cell() {
     const { filename, cellId } = useParams<{ filename: string, cellId: string }>();
     const [view, setView] = React.useState('ph');
+    const [scalebar, setScalebar] = React.useState(false);
 
     const handleView = (event: React.MouseEvent<HTMLElement>, newView: string) => {
         setView(newView);
+    };
+
+    const handleScalebarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setScalebar(event.target.checked);
     };
 
     const imageUrl = `http://10.32.17.15:8000/cellapi/cells/${filename}/cell/${cellId}/${view}`;
@@ -27,9 +33,8 @@ export default function Cell() {
             <Typography variant="h6" align="center" gutterBottom>
                 Cell ID: {cellId}
             </Typography>
-
             <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-                <Stack direction="column" spacing={3}>
+                <Stack direction="row" spacing={3}>
                     <ToggleButtonGroup
                         value={view}
                         exclusive
@@ -56,7 +61,12 @@ export default function Cell() {
                             REPLOT
                         </ToggleButton>
                     </ToggleButtonGroup>
+                    <FormControlLabel
+                        control={<Checkbox checked={scalebar} onChange={handleScalebarChange} />}
+                        label="Scalebar"
+                    />
                 </Stack>
+
                 <br></br>
                 <SquareImage imgSrc={imageUrl} size={500} />
             </Box>
