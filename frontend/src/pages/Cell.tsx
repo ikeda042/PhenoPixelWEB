@@ -26,7 +26,7 @@ export default function Cell() {
         setScalebar(event.target.checked);
     };
 
-    const imageUrl = `http://10.32.17.15:8000/cellapi/cells/${filename}/cell/${cellId}/${view}`;
+    const imageUrl = `http://10.32.17.15:8000/cellapi/cells/${filename}/cell/${cellId}/${view}?draw_scale_bar=${scalebar}`;
 
     return (
         <div style={{ height: 700, width: '100%' }}>
