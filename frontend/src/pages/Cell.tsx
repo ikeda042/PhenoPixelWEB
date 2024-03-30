@@ -73,7 +73,23 @@ export default function Cell() {
                     </Button>
                 </Stack>
                 <br></br>
-                <SquareImage imgSrc={imageUrl} size={500} />
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+                    <SquareImage imgSrc={imageUrl} size={500} />
+                    <Box sx={{ marginLeft: 2 }}>
+                        <Typography variant="h5">
+                            Stats:
+                        </Typography>
+                        <Typography variant="body1">
+                            細胞の統計情報1
+                        </Typography>
+                        <Typography variant="body1">
+                            細胞の統計情報2
+                        </Typography>
+                        <Typography variant="body1">
+                            細胞の統計情報3
+                        </Typography>
+                    </Box>
+                </Box>
             </Box>
         </div>
     );
