@@ -45,6 +45,7 @@ export default function DBtable({ data }: DBTableProps) {
         },
     ];
 
+
     return (
         <DataGrid
             rows={data.map((row, index) => {
