@@ -76,13 +76,11 @@ export default function Dbcontents() {
 
     return (
         <div style={{ height: 700, width: '100%' }}>
-
-
             <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" margin={5}  >
                 <Typography variant="h4" component="h2" gutterBottom>
                     {filename}
                 </Typography>
-                <Button variant="contained" onClick={handleExport} style={{ marginRight: "5px" }} >
+                <Button variant="contained" onClick={handleExport} style={{ marginRight: "5px", backgroundColor: 'black', color: 'white' }} >
                     CSV出力
                 </Button>
             </Box>
