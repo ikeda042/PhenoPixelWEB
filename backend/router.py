@@ -138,6 +138,7 @@ async def read_cell_fluo_hadamard(db_name: str, cell_id: str,draw_scale_bar: boo
 
 @router_cell.get("/cells/{db_name}/cell/{cell_id}/replot")
 async def replot(db_name: str, cell_id: str):
+    plt.style.use("dark_background")
     cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
     image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(image_fluo, cv2.COLOR_BGR2GRAY)
@@ -189,12 +190,9 @@ async def replot(db_name: str, cell_id: str):
         cmap=cmap,
     )
     # plt.scatter(u1_contour, u2_contour, s=10, color="lime")
-    plt.grid()
     W = np.array([[i**4, i**3, i**2, i, 1] for i in [i[1] for i in U]])
-    print(W)
     f = np.array([i[0] for i in U])
     theta = inv(W.transpose() @ W) @ W.transpose() @ f
-    print(theta)
     x = np.linspace(min_u1, max_u1, 1000)
     y = [
         theta[0] * i**4
