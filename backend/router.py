@@ -137,7 +137,6 @@ async def replot(db_name: str, cell_id: str):
     image_fluo = cv2.cvtColor(image_fluo, cv2.COLOR_BGR2GRAY)
     contour_raw = await get_cell_contour(f"./databases/{db_name}.db", cell_id)
     await replot_blocking_operations(image_fluo, contour_raw, image_fluo)
-    
     return StreamingResponse(open("temp_replot.png", "rb"), media_type="image/png")
 
 
