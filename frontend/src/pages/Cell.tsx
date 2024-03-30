@@ -57,6 +57,9 @@ export default function Cell() {
                         <ToggleButton value="fluox5" aria-label="fluox5">
                             FLUO x5
                         </ToggleButton>
+                        <ToggleButton value="fluohadamard" aria-label="fluohadamard">
+                            FLUO MASKed
+                        </ToggleButton>
                         <ToggleButton value="replot" aria-label="replot">
                             REPLOT
                         </ToggleButton>

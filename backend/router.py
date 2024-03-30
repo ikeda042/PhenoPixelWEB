@@ -109,6 +109,24 @@ async def read_cell_fluo_contour(db_name: str, cell_id: str,draw_scale_bar: bool
         await afp.write(buffer)
     return StreamingResponse(open("temp_fluocontour.png", "rb"), media_type="image/png")
 
+@router_cell.get("/cells/{db_name}/cell/{cell_id}/fluohadamard")
+async def read_cell_fluo_hadamard(db_name: str, cell_id: str,draw_scale_bar: bool = Query(default=True)):
+    cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
+    contour = await get_cell_contour(f"./databases/{db_name}.db", cell_id)
+    image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
+    mask = np.zeros((image_fluo.shape[0], image_fluo.shape[0]), dtype=np.uint8)
+    cv2.fillPoly(mask, [pickle.loads(contour)], 1)
+    output_image = cv2.bitwise_and(image_fluo, image_fluo, mask=mask)
+    output_image[:, :, 0] = 0
+    output_image[:, :, 2] = 0
+    if draw_scale_bar:
+        output_image = await draw_scale_bar_with_centered_text(output_image)
+    _, buffer = cv2.imencode(".png", output_image)
+    async with aiofiles.open("temp_fluohadamard.png", "wb") as afp:
+        await afp.write(buffer)
+    return StreamingResponse(open("temp_fluohadamard.png", "rb"), media_type="image/png")
+
+
 @router_cell.get("/cells/{db_name}/cell/{cell_id}/replot")
 async def replot(db_name: str, cell_id: str):
     cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
@@ -116,15 +134,8 @@ async def replot(db_name: str, cell_id: str):
     gray = cv2.cvtColor(image_fluo, cv2.COLOR_BGR2GRAY)
     contour = await get_cell_contour(f"./databases/{db_name}.db", cell_id)
     
-    mask = np.zeros_like(gray)
+    coords_inside_cell_1, points_inside_cell_1 = [], []
 
-    # Draw the contour on the mask
-    cv2.drawContours(mask, [contour], -1, (255), thickness=cv2.FILLED)
-
-    # Get the coordinates where the mask is non-zero
-    y, x = np.where(mask)
-
-    print(x, y)
 
 
 
