@@ -73,7 +73,7 @@ export default function Nav(props: Props) {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             <Box component={BallotIcon} sx={{ marginRight: 1 }} />  {/* Add the icon here */}
                             抗生物質添加培養データベース管理システム
-                            抗生物質添加培養データベース管理システム
+
                         </Typography>
                     </Link>
                 </Toolbar>
