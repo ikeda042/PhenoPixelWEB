@@ -12,6 +12,8 @@ from fastapi.responses import StreamingResponse
 import aiofiles
 import pickle
 import matplotlib.pyplot as plt
+from functions import draw_scale_bar_with_centered_text
+from fastapi.params import Query
 
 
 app = FastAPI(docs_url="/docs")
@@ -45,9 +47,11 @@ async def read_cell_dbs():
     return dbinfo_list
 
 @router_cell.get("/cells/{db_name}/cell/{cell_id}/ph")
-async def read_cell_ph(db_name: str, cell_id: str):
+async def read_cell_ph(db_name: str, cell_id: str,draw_scale_bar: bool = Query(default=True)):
     cell: bytes = await get_cell_ph(f"./databases/{db_name}.db", cell_id)
     image_ph = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
+    
+    image_ph = draw_scale_bar_with_centered_text(image_ph)
     _, buffer = cv2.imencode(".png", image_ph)
     async with aiofiles.open("temp.png", "wb") as afp:
         await afp.write(buffer)
@@ -119,7 +123,7 @@ async def replot(db_name: str, cell_id: str):
 
 
 
-    
+
 app.include_router(router_cell)
 
 if __name__ == "__main__":
