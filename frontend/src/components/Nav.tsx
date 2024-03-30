@@ -69,7 +69,7 @@ export default function Nav(props: Props) {
                     {/* AppBar内のタイトルもLinkでラップ可能 */}
                     <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            細胞データベース管理システム
+                            抗生物質添加培養データベース管理システム
                         </Typography>
                     </Link>
                 </Toolbar>
