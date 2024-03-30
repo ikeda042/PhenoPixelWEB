@@ -113,6 +113,13 @@ async def replot(db_name: str, cell_id: str):
     y, x = np.where(mask)
 
     print(x, y)
+
+
+
+
+
+
+    
 app.include_router(router_cell)
 
 if __name__ == "__main__":
