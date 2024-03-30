@@ -15,8 +15,8 @@ import { FormControlLabel, Checkbox } from '@mui/material';
 
 export default function Cell() {
     const { filename, cellId } = useParams<{ filename: string, cellId: string }>();
-    const [view, setView] = React.useState('ph');
-    const [scalebar, setScalebar] = React.useState(false);
+    const [view, setView] = useState('ph');
+    const [scalebar, setScalebar] = useState(false);
 
     const handleView = (event: React.MouseEvent<HTMLElement>, newView: string) => {
         setView(newView);
