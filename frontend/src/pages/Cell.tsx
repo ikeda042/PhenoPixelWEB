@@ -70,6 +70,7 @@ export default function Cell() {
                     </Button>
                 </Stack>
                 <br></br>
+
                 <SquareImage imgSrc={imageUrl} size={500} />
             </Box>
         </div>
