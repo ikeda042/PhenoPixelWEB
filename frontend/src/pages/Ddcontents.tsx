@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import Grid from '@mui/material/Unstable_Grid2';
 import Link from '@mui/material/Link';
-
+import { Link as RouterLink } from 'react-router-dom';
 
 type RowData = {
     cell_id: string;
@@ -80,9 +80,14 @@ export default function Dbcontents() {
                 <Typography variant="h4" component="h2" gutterBottom>
                     {filename}
                 </Typography>
-                <Button variant="contained" onClick={handleExport} style={{ marginRight: "5px", backgroundColor: 'black', color: 'white' }} >
-                    CSV出力
-                </Button>
+                <Box>
+                    <Button variant="contained" onClick={handleExport} style={{ marginRight: "5px", backgroundColor: 'black', color: 'white' }} >
+                        CSV出力
+                    </Button>
+                    <Button variant="contained" component={RouterLink} to={`/dbcontents/${filename}/overview`} style={{ backgroundColor: 'black', color: 'white' }}>
+                        Overview
+                    </Button>
+                </Box>
             </Box>
             <Grid container spacing={4} margin={5}>
                 <DataGrid
