@@ -111,7 +111,7 @@ async def read_cell_fluo5(db_name: str, cell_id: str,draw_scale_bar: bool = Quer
         await afp.write(buffer)
     return StreamingResponse(open("temp_fluo5.png", "rb"), media_type="image/png")
 
-@app.get("/cells/{db_name}/cell/{cell_id}/overview")
+@app.get("/cells/{db_name}/overview/cell/{cell_id}")
 async def read_cell_for_overview(db_name: str, cell_id: str, draw_scale_bar: bool = Query(default=True)):
     cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
     image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)

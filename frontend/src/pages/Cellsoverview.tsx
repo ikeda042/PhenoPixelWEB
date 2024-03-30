@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Box, Grid } from '@mui/material';
+
 interface Cell {
-    cell_id: number;
+    cell_id: string;
 }
+interface Image {
+    cellId: string;
+    src: string;
+}
+
 
 
 export default function DbcontentsOverview() {
     const { filename } = useParams();
-    const [cellImages, setCellImages] = useState([]);
+    const [cellImages, setCellImages] = useState<Image[]>([]);
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -16,8 +22,9 @@ export default function DbcontentsOverview() {
                 const response = await fetch(`http://10.32.17.15:8000/cellapi/cells/databases/${filename}`);
                 const cells = await response.json();
 
-                const images = await Promise.all(cells.map(async (cell: Cell) => {
-                    const imageResponse = await fetch(`http://10.32.17.15:8000/cellapi/cells/${filename}/cell/${cell.cell_id}/overview`);
+                const images: Image[] = await Promise.all(cells.map(async (cell: Cell) => {
+                    console.log(cell.cell_id);
+                    const imageResponse = await fetch(`http://10.32.17.15:8000/cells/${filename}/overview/cell/${cell.cell_id}?draw_scale_bar=true`);
                     const imageData = await imageResponse.json();
                     return { cellId: cell.cell_id, src: `data:image/png;base64,${imageData.image}` };
                 }));
