@@ -8,7 +8,7 @@ from database import count_valid_cells, get_cells, get_cell_ph, get_cell_fluo, g
 from fastapi.middleware.cors import CORSMiddleware
 import cv2
 import numpy as np
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 import aiofiles
 import pickle
 import matplotlib.pyplot as plt
@@ -40,6 +40,12 @@ async def read_cell_db(db_name: str):
     print(f"./databases/{db_name}++++++++++++++++++++++++++++++++++++++")
     return await get_cells(f"./databases/{db_name}.db")
 
+@router_cell.get("/cells/databases/{db_name}/sqliteexport")
+async def read_cell_db(db_name: str):
+    return FileResponse(
+        path=f"./databases/{db_name}.db",
+        headers={"Content-Disposition": f"attachment; filename={db_name}.db"},
+    )
 @router_cell.get("/cells/databases", response_model=list[DBInfo])
 async def read_cell_dbs():
     loop = asyncio.get_event_loop()
@@ -138,6 +144,7 @@ async def replot(db_name: str, cell_id: str):
     contour_raw = await get_cell_contour(f"./databases/{db_name}.db", cell_id)
     await replot_blocking_operations(image_fluo, contour_raw, image_fluo)
     return StreamingResponse(open("temp_replot.png", "rb"), media_type="image/png")
+
 
 
 

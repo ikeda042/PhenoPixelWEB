@@ -34,7 +34,10 @@ export default function DBtable({ data }: DBTableProps) {
                 <Button
                     variant="contained"
                     style={{ backgroundColor: 'black', color: 'white' }}
-                    onClick={() => console.log(`Clicked row ${params.id} with file name ${(params.row.file_name as string).split('.')[0]}`)}
+                    onClick={() => {
+                        const dbName = (params.row.file_name as string).split('.')[0];
+                        window.open(`http://10.32.17.15:8000/cellapi/cells/databases/${dbName}/sqliteexport`, '_blank');
+                    }}
                 >
                     Export
                 </Button>
