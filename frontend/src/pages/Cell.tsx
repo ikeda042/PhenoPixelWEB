@@ -31,8 +31,6 @@ export default function Cell() {
     return (
         <div style={{ height: 700, width: '100%' }}>
             <Typography variant="h6" align="center" gutterBottom>
-
-
                 Cell ID: {cellId} ({filename})
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
