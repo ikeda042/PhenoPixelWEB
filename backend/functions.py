@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from numpy.linalg import eig
 
 async def draw_scale_bar_with_centered_text(image_ph):
     """
@@ -50,3 +51,33 @@ async def draw_scale_bar_with_centered_text(image_ph):
     cv2.putText(image_ph, text, (text_x, text_y), font, text_scale, text_color, text_thickness)
 
     return image_ph
+
+def basis_conversion(contour:list[list[int]],X:np.ndarray,center_x:float,center_y:float,coordinates_incide_cell:list[list[int]]) -> list[list[float]]:
+    Sigma = np.cov(X)
+    eigenvalues, eigenvectors = eig(Sigma)
+    if eigenvalues[1] < eigenvalues[0]:
+        m = eigenvectors[1][1]/eigenvectors[1][0]
+        Q = np.array([eigenvectors[1],eigenvectors[0]])
+        U = [Q.transpose()@np.array([i,j]) for i,j in coordinates_incide_cell]
+        U = [[j,i] for i,j in U]
+        contour_U = [Q.transpose()@np.array([j,i]) for i,j in contour]
+        contour_U = [[j,i] for i,j in contour_U]
+        color = "red"
+        center = [center_x, center_y]
+        u1_c, u2_c = center@Q
+    else:
+        m = eigenvectors[0][1]/eigenvectors[0][0]
+        Q = np.array([eigenvectors[0],eigenvectors[1]])
+        U = [Q.transpose()@np.array([j,i]).transpose() for i,j in coordinates_incide_cell]
+        contour_U = [Q.transpose()@np.array([i,j]) for i,j in contour]
+        color = "blue"
+        center = [center_x,
+                  center_y]
+        u2_c, u1_c = center@Q
+    
+    u1 = [i[1] for i in U]
+    u2 = [i[0] for i in U]
+    u1_contour = [i[1] for i in contour_U]
+    u2_contour = [i[0] for i in contour_U]
+    min_u1, max_u1 = min(u1), max(u1)
+    return u1,u2,u1_contour,u2_contour,min_u1,max_u1,u1_c,u2_c, U, contour_U
