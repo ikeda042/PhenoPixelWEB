@@ -48,7 +48,7 @@ export default function DBtable({ data }: DBTableProps) {
     return (
         <DataGrid
             rows={data.map((row, index) => {
-                const matchResult = row.file_name.match(/tri(\d+)min/);
+                const matchResult = row.file_name.match(/[a-z]{3}(\d+)min/);
                 const exposure_time = Number(matchResult?.[1] ?? 0);
                 return {
                     id: index,

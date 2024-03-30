@@ -70,10 +70,9 @@ export default function Nav(props: Props) {
                     </IconButton>
                     {/* AppBar内のタイトルもLinkでラップ可能 */}
                     <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
                             <Box component={BallotIcon} sx={{ marginRight: 1 }} />  {/* Add the icon here */}
                             抗生物質添加培養データベース管理システム
-
                         </Typography>
                     </Link>
                 </Toolbar>
