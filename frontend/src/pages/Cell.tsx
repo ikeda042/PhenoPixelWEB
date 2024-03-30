@@ -31,7 +31,9 @@ export default function Cell() {
     return (
         <div style={{ height: 700, width: '100%' }}>
             <Typography variant="h6" align="center" gutterBottom>
-                Cell ID: {cellId}
+
+
+                Cell ID: {cellId} ({filename})
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
                 <Stack direction="row" spacing={3}>
@@ -65,10 +67,14 @@ export default function Cell() {
                         control={<Checkbox checked={scalebar} onChange={handleScalebarChange} />}
                         label="Scalebar"
                     />
+                    <Button variant="contained" style={{ backgroundColor: 'black', color: 'white' }} href={imageUrl} download>
+                        Export Image
+                    </Button>
                 </Stack>
 
                 <br></br>
                 <SquareImage imgSrc={imageUrl} size={500} />
+
             </Box>
         </div>
     );
