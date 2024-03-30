@@ -50,8 +50,8 @@ async def read_cell_dbs():
 async def read_cell_ph(db_name: str, cell_id: str,draw_scale_bar: bool = Query(default=True)):
     cell: bytes = await get_cell_ph(f"./databases/{db_name}.db", cell_id)
     image_ph = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
-    
-    image_ph = draw_scale_bar_with_centered_text(image_ph)
+    if draw_scale_bar:
+        image_ph = await draw_scale_bar_with_centered_text(image_ph)
     _, buffer = cv2.imencode(".png", image_ph)
     async with aiofiles.open("temp.png", "wb") as afp:
         await afp.write(buffer)
