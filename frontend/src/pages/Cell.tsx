@@ -69,10 +69,8 @@ export default function Cell() {
                         Export Image
                     </Button>
                 </Stack>
-
                 <br></br>
                 <SquareImage imgSrc={imageUrl} size={500} />
-
             </Box>
         </div>
     );
