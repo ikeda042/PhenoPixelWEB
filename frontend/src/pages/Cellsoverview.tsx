@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Box, Grid, Link as MuiLink } from '@mui/material';
 
@@ -9,6 +9,40 @@ interface Image {
     cellId: string;
     src: string;
 }
+
+interface ImageComponentProps {
+    src: string;
+    alt: string;
+}
+
+function useLazyLoad(ref: React.RefObject<HTMLImageElement>, src: string) {
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                if (ref.current) {
+                    ref.current.src = src;
+                }
+                observer.disconnect();
+            }
+        });
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => observer.disconnect();
+    }, [src]);
+}
+
+
+
+const ImageComponent: React.FC<ImageComponentProps> = ({ src, alt }) => {
+    const imgRef = React.useRef<HTMLImageElement>(null);
+    useLazyLoad(imgRef, src);
+
+    return <img ref={imgRef} alt={alt} style={{ width: '100%' }} />;
+};
+
 
 export default function DbcontentsOverview() {
     const { filename } = useParams();
@@ -43,7 +77,7 @@ export default function DbcontentsOverview() {
                 {cellImages.map(({ cellId, src }) => (
                     <Grid item xs={2} key={cellId}>
                         <MuiLink href={`/dbcontents/${filename}/cell/${cellId.split('.')[0]}`}>
-                            <img src={src} alt={`Cell ${cellId}`} style={{ width: '100%' }} />
+                            <ImageComponent src={src} alt={`Cell ${cellId}`} />
                         </MuiLink>
                     </Grid>
                 ))}
