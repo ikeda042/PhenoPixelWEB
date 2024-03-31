@@ -13,20 +13,7 @@ import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Stack } from '@mui/material';
 import { FormControlLabel, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
-{/* class CellStats(BaseModel):
-                        basic_cell_info: BasicCellInfo
-                        ph_max_brightness: float | None = None
-                        ph_min_brightness: float | None= None
-                        ph_mean_brightness_raw: float | None= None
-                        ph_mean_brightness_normalized: float | None= None
-                        ph_median_brightness_raw: float | None= None
-                        ph_median_brightness_normalized: float | None= None
-                        max_brightness: float
-                        min_brightness: float
-                        mean_brightness_raw: float
-                        mean_brightness_normalized: float
-                        median_brightness_raw: float
-                        median_brightness_normalized: float */}
+
 
 type CellStats = {
     basic_cell_info: {
