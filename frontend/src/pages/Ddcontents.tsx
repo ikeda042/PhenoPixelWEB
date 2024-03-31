@@ -11,6 +11,7 @@ import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import { ScatterChart } from '@mui/x-charts/ScatterChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
+import { CircularProgress } from '@mui/material';
 
 type RowData = {
     cell_id: string;
@@ -40,6 +41,7 @@ export default function Dbcontents() {
     const { filename } = useParams();
     const [rows, setRows] = useState<RowData[]>([]);
     const [cellIds, setCellIds] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleExport = () => {
         const csvData = convertToCSV(rows);
@@ -77,6 +79,7 @@ export default function Dbcontents() {
     };
 
     const handleExportStats = async () => {
+        setIsLoading(true);
         const queryString = cellIds.map(id => `cell_ids=${id}`).join('&');
         const url = `http://10.32.17.15:8000/cellapi/cells/${filename}/stats/csv?${queryString}`;
 
@@ -90,6 +93,7 @@ export default function Dbcontents() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        setIsLoading(false);
     };
 
 
@@ -123,27 +127,41 @@ export default function Dbcontents() {
                     </Button>
                 </Box>
             </Box>
-            <Grid container spacing={4} margin={5}>
-                <ScatterChart
-                    width={600}
-                    height={400}
-                    series={[
-                        {
-                            label: 'Perimeter vs Area',
-                            data: rows.map((row) => ({ x: row.perimeter, y: row.area, id: row.cell_id })),
-                        },
-                    ]}
-                    {...otherSetting}
-                />
-            </Grid>
-            <Grid container spacing={4} margin={5}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    autoHeight
-                    pagination
-                />
-            </Grid>
+
+            {isLoading ? (
+                <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                    <Stack spacing={2} direction="column" alignItems="center">
+                        <CircularProgress />
+                        <Typography variant="h4" component="h2" gutterBottom>
+                            統計データを出力中...
+                        </Typography>
+                    </Stack>
+                </Box>
+            ) : (
+                <>   <Grid container spacing={4} margin={5}>
+                    <ScatterChart
+                        width={600}
+                        height={400}
+                        series={[
+                            {
+                                label: 'Perimeter vs Area',
+                                data: rows.map((row) => ({ x: row.perimeter, y: row.area, id: row.cell_id })),
+                            },
+                        ]}
+                        {...otherSetting}
+                    />
+                </Grid>
+                    <Grid container spacing={4} margin={5}>
+                        <DataGrid
+                            rows={rows}
+                            columns={columns}
+                            autoHeight
+                            pagination
+                        />
+                    </Grid>
+                </>
+            )}
+
         </div>
     );
 }
