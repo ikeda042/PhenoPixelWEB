@@ -3,7 +3,7 @@ import uvicorn
 import aiofiles.os as aos
 import asyncio
 import os
-from schemas import DBInfo, CellDB
+from schemas import DBInfo, CellDB, CellStats
 from database import count_valid_cells, get_cells, get_cell_ph, get_cell_fluo, get_cell_contour
 from fastapi.middleware.cors import CORSMiddleware
 import cv2
@@ -12,7 +12,7 @@ from fastapi.responses import StreamingResponse, FileResponse
 import aiofiles
 import pickle
 import matplotlib.pyplot as plt
-from functions import draw_scale_bar_with_centered_text, basis_conversion, replot_blocking_operations
+from functions import draw_scale_bar_with_centered_text, replot_blocking_operations, get_cell_stats
 from fastapi.params import Query
 from numpy.linalg import inv
 from fastapi import FastAPI, Query
@@ -22,10 +22,11 @@ import numpy as np
 import aiofiles
 import base64
 from io import BytesIO
+from typing import Annotated
 
 
-
-app = FastAPI(docs_url="/docs")
+# apiの名前を指定してFastAPIのインスタンスを作成
+app = FastAPI(title="Cell API", version="0.1",docs_url="/docs")
 router_cell = APIRouter(prefix="/cellapi")
 
 app.add_middleware(
@@ -61,6 +62,14 @@ async def read_cell_dbs():
     for file in await loop.run_in_executor(None, lambda: [entry.name for entry in os.scandir("./databases/") if entry.is_file() and entry.name.endswith(".db")]):
         dbinfo_list.append(DBInfo(file_name=file, cell_count=await count_valid_cells(f"./databases/{file}")))
     return dbinfo_list
+
+@router_cell.get("/cells/{db_name}/stats", response_model=list[CellStats])
+async def read_cell_stats(db_name: str, cell_ids: list[str] = Query(None)):
+    res = []
+    if cell_ids:
+        for cell_id in cell_ids:
+            res.append(await get_cell_stats(f"./databases/{db_name}.db", cell_id))
+    return res
 
 @router_cell.get("/cells/{db_name}/cell/{cell_id}/ph")
 async def read_cell_ph(db_name: str, cell_id: str,draw_scale_bar: bool = Query(default=True)):

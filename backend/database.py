@@ -40,6 +40,25 @@ async def get_cells_all(dbname:str) -> list[CellDBAll]:
     await session.close()
     return [CellDBAll(cell_id=cell.cell_id, label_experiment=cell.label_experiment, manual_label=cell.manual_label, perimeter=round(cell.perimeter,2), area=cell.area, img_ph=cell.img_ph, img_fluo1=cell.img_fluo1, img_fluo2=cell.img_fluo2, contour=cell.contour, center_x=cell.center_x, center_y=cell.center_y) for cell in cells]
 
+async def get_cell_all(dbname:str, cell_id:str) -> CellDBAll:
+    async for session in get_session(dbname=dbname):
+        result = await session.execute(select(Cell).where(Cell.cell_id == cell_id))
+        cell = result.scalars().first()
+    await session.close()
+    return CellDBAll(
+        cell_id=cell.cell_id, 
+        label_experiment=cell.label_experiment, 
+        manual_label=cell.manual_label, 
+        perimeter=round(cell.perimeter,2), 
+        area=cell.area, 
+        img_ph=bytes(cell.img_ph), 
+        img_fluo1=bytes(cell.img_fluo1), 
+        img_fluo2=None, 
+        contour=bytes(cell.contour), 
+        center_x=cell.center_x, 
+        center_y=cell.center_y
+    )
+
 async def get_cells(dbname:str) -> list[CellDB]:
     async for session in get_session(dbname=dbname):
         result = await session.execute(select(Cell).where(Cell.manual_label =="1"))

@@ -6,6 +6,8 @@ import pickle
 from numpy.linalg import inv
 from concurrent.futures import ThreadPoolExecutor
 import asyncio
+from schemas import BasicCellInfo, CellStats, CellDBAll
+from database import get_cell_all
 
 executor = ThreadPoolExecutor(max_workers=1)
 
@@ -94,6 +96,74 @@ def basis_conversion(contour:list[list[int]],X:np.ndarray,center_x:float,center_
     min_u1, max_u1 = min(u1), max(u1)
     return u1,u2,u1_contour,u2_contour,min_u1,max_u1,u1_c,u2_c, U, contour_U
 
+
+async def get_cell_stats(dbname:str, cell_id: str) -> CellStats:
+    cell : CellDBAll = await get_cell_all(dbname, cell_id)
+    image_ph = cv2.imdecode(np.frombuffer(cell.img_ph, dtype=np.uint8), cv2.IMREAD_COLOR)
+    image_fluo =  cv2.imdecode(np.frombuffer(cell.img_fluo1, dtype=np.uint8), cv2.IMREAD_COLOR)
+    contour_raw = cell.contour
+    gray = cv2.cvtColor(image_fluo, cv2.COLOR_BGR2GRAY)
+
+    contour = [
+                [j, i] for i, j in [i[0] for i in pickle.loads(contour_raw)]
+                    ]
+    coords_inside_cell_1, points_inside_cell_1, projected_points = [], [],[]
+    for i in range(image_fluo.shape[1]):
+        for j in range(image_fluo.shape[0]):
+            if (
+                cv2.pointPolygonTest(
+                    pickle.loads(contour_raw), (i, j), False
+                )
+                >= 0
+            ):
+                coords_inside_cell_1.append([i, j])
+                points_inside_cell_1.append(gray[j][i])
+    X = np.array(
+                        [
+                            [i[1] for i in coords_inside_cell_1],
+                            [i[0] for i in coords_inside_cell_1],
+                        ]
+                    )
+    (
+                        u1,
+                        u2,
+                        u1_contour,
+                        u2_contour,
+                        min_u1,
+                        max_u1,
+                        u1_c,
+                        u2_c,
+                        U,
+                        contour_U,
+                    ) = basis_conversion(
+                        contour, X, image_fluo.shape[0]//2, image_fluo.shape[1]//2, coords_inside_cell_1
+                    )   
+    min_u1, max_u1 = min(u1), max(u1)
+    max_brightness = max(points_inside_cell_1)
+    min_brightness = min(points_inside_cell_1)
+    W = np.array([[i**4, i**3, i**2, i, 1] for i in [i[1] for i in U]])
+    f = np.array([i[0] for i in U])
+    theta = inv(W.transpose() @ W) @ W.transpose() @ f
+    x = np.linspace(min_u1, max_u1, 1000)
+    y = [
+        theta[0] * i**4
+        + theta[1] * i**3
+        + theta[2] * i**2
+        + theta[3] * i
+        + theta[4]
+        for i in x
+    ]
+    mean_brightness_raw = np.mean(points_inside_cell_1)
+    mean_brightness_normalized = np.mean([i / max_brightness for i in points_inside_cell_1])
+    median_brightness_raw = np.median(points_inside_cell_1)
+    median_brightness_normalized = np.median([i / max_brightness for i in points_inside_cell_1])
+    return CellStats(basic_cell_info=BasicCellInfo(
+        cell_id=cell.cell_id,
+        label_experiment=cell.label_experiment,
+        manual_label=cell.manual_label,
+        perimeter=round(cell.perimeter,2),
+        area=cell.area
+    ),max_brightness=max_brightness,min_brightness=min_brightness,mean_brightness_raw=mean_brightness_raw,mean_brightness_normalized=mean_brightness_normalized,median_brightness_raw=median_brightness_raw,median_brightness_normalized=median_brightness_normalized)
 
 async def replot_blocking_operations(image_fluo, contour_raw, gray):
     class Point:
