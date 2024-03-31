@@ -124,70 +124,70 @@ export default function Cell() {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell>表示モード</TableCell>
-                                        <TableCell>{view}</TableCell>
+                                        <TableCell align='center'>{view}</TableCell>
                                     </TableRow>
 
                                     <TableRow>
-                                        <TableCell>Database / Cell ID</TableCell>
-                                        <TableCell>{filename} / {cellId}</TableCell>
+                                        <TableCell >Database / Cell ID</TableCell>
+                                        <TableCell align='center'>{filename} / {cellId}</TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell>周囲長 (µm) / 面積 (µm^2)</TableCell>
-                                        <TableCell>{cellStats?.basic_cell_info.perimeter} / {cellStats?.basic_cell_info.area}</TableCell>
+                                        <TableCell >周囲長 (µm) / 面積 (µm^2)</TableCell>
+                                        <TableCell align='center'>{cellStats?.basic_cell_info.perimeter} / {cellStats?.basic_cell_info.area}</TableCell>
                                     </TableRow>
 
                                     {view === 'ph' ? (
                                         <>
                                             <TableRow>
-                                                <TableCell>最大位相差輝度</TableCell>
-                                                <TableCell>{cellStats?.ph_max_brightness}</TableCell>
+                                                <TableCell >最大位相差輝度</TableCell>
+                                                <TableCell align='center'>{cellStats?.ph_max_brightness}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>最小位相差輝度</TableCell>
-                                                <TableCell>{cellStats?.ph_min_brightness}</TableCell>
+                                                <TableCell align='center'>{cellStats?.ph_min_brightness}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>平均位相差輝度(8bit)</TableCell>
-                                                <TableCell>{cellStats?.ph_mean_brightness_raw}</TableCell>
+                                                <TableCell align='center'>{cellStats?.ph_mean_brightness_raw}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>中央値位相差輝度(8bit)</TableCell>
-                                                <TableCell>{cellStats?.ph_median_brightness_raw}</TableCell>
+                                                <TableCell align='center'>{cellStats?.ph_median_brightness_raw}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>平均位相差輝度(正規化)</TableCell>
-                                                <TableCell>{cellStats?.ph_mean_brightness_normalized}</TableCell>
+                                                <TableCell align='center'>{cellStats?.ph_mean_brightness_normalized}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>中央値位相差輝度(正規化)</TableCell>
-                                                <TableCell>{cellStats?.ph_median_brightness_normalized}</TableCell>
+                                                <TableCell align='center'>{cellStats?.ph_median_brightness_normalized}</TableCell>
                                             </TableRow>
                                         </>
                                     ) : (
                                         <>
                                             <TableRow>
                                                 <TableCell>最大蛍光輝度(8bit)</TableCell>
-                                                <TableCell>{cellStats?.max_brightness}</TableCell>
+                                                <TableCell align='center'>{cellStats?.max_brightness}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>最小蛍光輝度(8bit)</TableCell>
-                                                <TableCell>{cellStats?.min_brightness}</TableCell>
+                                                <TableCell align='center'>{cellStats?.min_brightness}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>平均蛍光輝度(8bit)</TableCell>
-                                                <TableCell>{cellStats?.mean_brightness_raw}</TableCell>
+                                                <TableCell align='center'>{cellStats?.mean_brightness_raw}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>中央値蛍光輝度(8bit)</TableCell>
-                                                <TableCell>{cellStats?.median_brightness_raw}</TableCell>
+                                                <TableCell align='center'>{cellStats?.median_brightness_raw}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>平均蛍光輝度(正規化)</TableCell>
-                                                <TableCell>{cellStats?.mean_brightness_normalized}</TableCell>
+                                                <TableCell align='center'>{cellStats?.mean_brightness_normalized}</TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell>中央値蛍光輝度(正規化)</TableCell>
-                                                <TableCell>{cellStats?.median_brightness_normalized}</TableCell>
+                                                <TableCell align='center'>{cellStats?.median_brightness_normalized}</TableCell>
                                             </TableRow>
                                         </>
                                     )}
