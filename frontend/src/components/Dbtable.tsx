@@ -14,8 +14,8 @@ export default function DBtable({ data }: DBTableProps) {
         {
             field: 'file_name',
             headerName: 'Database name',
-            width: 250,
-            align: 'center',
+            width: 140,
+            align: 'left',
             headerAlign: 'center',
             renderCell: (params: GridRenderCellParams) =>
                 <Link href={`/dbcontents/${(params.value as string).split('.')[0]}`}>{(params.value as string).split('.')[0]}</Link>,
