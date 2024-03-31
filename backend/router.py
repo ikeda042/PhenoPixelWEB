@@ -74,6 +74,9 @@ async def read_cell_stats(db_name: str, cell_ids: list[str] = Query(None)):
             res.append(await get_cell_stats(f"./databases/{db_name}.db", cell_id))
     return res
 
+@router_cell.get("/cells/{db_name}/cells/{cell_id}/stats",response_model=CellStats)
+async def read_one_cell_stats(db_name: str, cell_id: str):
+    return await get_cell_stats(f"./databases/{db_name}.db", cell_id,include_ph=True)
 
 
 

@@ -97,7 +97,9 @@ def basis_conversion(contour:list[list[int]],X:np.ndarray,center_x:float,center_
     return u1,u2,u1_contour,u2_contour,min_u1,max_u1,u1_c,u2_c, U, contour_U
 
 
-async def get_cell_stats(dbname:str, cell_id: str) -> CellStats:
+
+
+async def get_cell_stats(dbname:str, cell_id: str, include_ph: bool = False) -> CellStats:
     cell : CellDBAll = await get_cell_all(dbname, cell_id)
     image_ph = cv2.imdecode(np.frombuffer(cell.img_ph, dtype=np.uint8), cv2.IMREAD_COLOR)
     image_fluo =  cv2.imdecode(np.frombuffer(cell.img_fluo1, dtype=np.uint8), cv2.IMREAD_COLOR)
@@ -157,6 +159,32 @@ async def get_cell_stats(dbname:str, cell_id: str) -> CellStats:
     mean_brightness_normalized = round(np.mean([i / max_brightness for i in points_inside_cell_1]),2)
     median_brightness_raw = round(np.median(points_inside_cell_1),2)
     median_brightness_normalized = round( np.median([i / max_brightness for i in points_inside_cell_1]),2)
+    if include_ph:
+        image_ph = cv2.cvtColor(image_ph, cv2.COLOR_BGR2GRAY)
+        coords_inside_cell_1_ph, points_inside_cell_1_ph = [], []
+        for i in range(image_ph.shape[1]):
+            for j in range(image_ph.shape[0]):
+                if (
+                    cv2.pointPolygonTest(
+                        pickle.loads(contour_raw), (i, j), False
+                    )
+                    >= 0
+                ):
+                    coords_inside_cell_1_ph.append([i, j])
+                    points_inside_cell_1_ph.append(image_ph[j][i])
+        ph_max_brightness = max(points_inside_cell_1_ph)
+        ph_min_brightness = min(points_inside_cell_1_ph)
+        ph_mean_brightness_raw = round(np.mean(points_inside_cell_1_ph),2)
+        ph_mean_brightness_normalized = round(np.mean([i / ph_max_brightness for i in points_inside_cell_1_ph]),2)
+        ph_median_brightness_raw = round(np.median(points_inside_cell_1_ph),2)
+        ph_median_brightness_normalized = round( np.median([i / ph_max_brightness for i in points_inside_cell_1_ph]),2)
+        return CellStats(basic_cell_info=BasicCellInfo(
+            cell_id=cell.cell_id,
+            label_experiment=cell.label_experiment,
+            manual_label=cell.manual_label,
+            perimeter=round(cell.perimeter,2),
+            area=cell.area
+        ),ph_max_brightness=ph_max_brightness,ph_min_brightness=ph_min_brightness,ph_mean_brightness_raw=ph_mean_brightness_raw,ph_mean_brightness_normalized=ph_mean_brightness_normalized,ph_median_brightness_raw=ph_median_brightness_raw,ph_median_brightness_normalized=ph_median_brightness_normalized,max_brightness=max_brightness,min_brightness=min_brightness,mean_brightness_raw=mean_brightness_raw,mean_brightness_normalized=mean_brightness_normalized,median_brightness_raw=median_brightness_raw,median_brightness_normalized=median_brightness_normalized)
     return CellStats(basic_cell_info=BasicCellInfo(
         cell_id=cell.cell_id,
         label_experiment=cell.label_experiment,

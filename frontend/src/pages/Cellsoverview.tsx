@@ -82,14 +82,15 @@ const DbcontentsOverview: React.FC = () => {
                 <Grid container spacing={2}>
                     {cellImages.map(({ cellId, src }) => (
                         <Grid item xs={2} key={cellId}>
-                            <MuiLink href={`/dbcontents/${filename}/cell/${cellId.split('.')[0]}`}>
+                            <MuiLink href={`/dbcontents/${filename}/cell/${cellId.split('.')[0]}`} target="_blank" rel="noopener noreferrer">
                                 <ImageComponent src={src} alt={`Cell ${cellId}`} />
                             </MuiLink>
                         </Grid>
                     ))}
                 </Grid>
-            )}
-        </Box>
+            )
+            }
+        </Box >
     );
 };
 

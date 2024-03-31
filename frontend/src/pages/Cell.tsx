@@ -12,11 +12,50 @@ import SquareImage from '../components/Squareimage';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Stack } from '@mui/material';
 import { FormControlLabel, Checkbox } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+{/* class CellStats(BaseModel):
+                        basic_cell_info: BasicCellInfo
+                        ph_max_brightness: float | None = None
+                        ph_min_brightness: float | None= None
+                        ph_mean_brightness_raw: float | None= None
+                        ph_mean_brightness_normalized: float | None= None
+                        ph_median_brightness_raw: float | None= None
+                        ph_median_brightness_normalized: float | None= None
+                        max_brightness: float
+                        min_brightness: float
+                        mean_brightness_raw: float
+                        mean_brightness_normalized: float
+                        median_brightness_raw: float
+                        median_brightness_normalized: float */}
+
+type CellStats = {
+    basic_cell_info: {
+        cell_id: string,
+        label_experiment: string,
+        manual_label: number,
+        perimeter: number,
+        area: number
+    },
+    max_brightness: number,
+    min_brightness: number,
+    mean_brightness_raw: number,
+    mean_brightness_normalized: number,
+    median_brightness_raw: number,
+    median_brightness_normalized: number,
+    ph_max_brightness?: number | null,
+    ph_min_brightness?: number | null,
+    ph_mean_brightness_raw?: number | null,
+    ph_mean_brightness_normalized?: number | null,
+    ph_median_brightness_raw?: number | null,
+    ph_median_brightness_normalized?: number | null
+};
 
 export default function Cell() {
     const { filename, cellId } = useParams<{ filename: string, cellId: string }>();
     const [view, setView] = useState('ph');
     const [scalebar, setScalebar] = useState(false);
+    const [cellStats, setCellStats] = useState<CellStats | null>(null);
+
 
     const handleView = (event: React.MouseEvent<HTMLElement>, newView: string) => {
         setView(newView);
@@ -26,13 +65,17 @@ export default function Cell() {
         setScalebar(event.target.checked);
     };
 
+    useEffect(() => {
+        fetch(`http://10.32.17.15:8000/cellapi/cells/${filename}/cells/${cellId}/stats`)
+            .then(response => response.json())
+            .then(data => setCellStats(data));
+    }, [filename, cellId]);
+
+
     const imageUrl = `http://10.32.17.15:8000/cellapi/cells/${filename}/cell/${cellId}/${view}?draw_scale_bar=${scalebar}`;
 
     return (
         <div style={{ height: 700, width: '100%' }}>
-            <Typography variant="h6" align="center" gutterBottom>
-                Cell ID: {cellId} ({filename})
-            </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
                 <Stack direction="row" spacing={3}>
                     <ToggleButtonGroup
@@ -76,18 +119,82 @@ export default function Cell() {
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
                     <SquareImage imgSrc={imageUrl} size={500} />
                     <Box sx={{ marginLeft: 2 }}>
-                        <Typography variant="h5">
-                            Stats:
-                        </Typography>
-                        <Typography variant="body1">
-                            細胞の統計情報1
-                        </Typography>
-                        <Typography variant="body1">
-                            細胞の統計情報2
-                        </Typography>
-                        <Typography variant="body1">
-                            細胞の統計情報3
-                        </Typography>
+                        <TableContainer>
+                            <Table>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>表示モード</TableCell>
+                                        <TableCell>{view}</TableCell>
+                                    </TableRow>
+
+                                    <TableRow>
+                                        <TableCell>Database / Cell ID</TableCell>
+                                        <TableCell>{filename} / {cellId}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>周囲長 (µm) / 面積 (µm^2)</TableCell>
+                                        <TableCell>{cellStats?.basic_cell_info.perimeter} / {cellStats?.basic_cell_info.area}</TableCell>
+                                    </TableRow>
+
+                                    {view === 'ph' ? (
+                                        <>
+                                            <TableRow>
+                                                <TableCell>最大位相差輝度</TableCell>
+                                                <TableCell>{cellStats?.ph_max_brightness}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>最小位相差輝度</TableCell>
+                                                <TableCell>{cellStats?.ph_min_brightness}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>平均位相差輝度(8bit)</TableCell>
+                                                <TableCell>{cellStats?.ph_mean_brightness_raw}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>中央値位相差輝度(8bit)</TableCell>
+                                                <TableCell>{cellStats?.ph_median_brightness_raw}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>平均位相差輝度(正規化)</TableCell>
+                                                <TableCell>{cellStats?.ph_mean_brightness_normalized}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>中央値位相差輝度(正規化)</TableCell>
+                                                <TableCell>{cellStats?.ph_median_brightness_normalized}</TableCell>
+                                            </TableRow>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <TableRow>
+                                                <TableCell>最大蛍光輝度(8bit)</TableCell>
+                                                <TableCell>{cellStats?.max_brightness}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>最小蛍光輝度(8bit)</TableCell>
+                                                <TableCell>{cellStats?.min_brightness}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>平均蛍光輝度(8bit)</TableCell>
+                                                <TableCell>{cellStats?.mean_brightness_raw}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>中央値蛍光輝度(8bit)</TableCell>
+                                                <TableCell>{cellStats?.median_brightness_raw}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>平均蛍光輝度(正規化)</TableCell>
+                                                <TableCell>{cellStats?.mean_brightness_normalized}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>中央値蛍光輝度(正規化)</TableCell>
+                                                <TableCell>{cellStats?.median_brightness_normalized}</TableCell>
+                                            </TableRow>
+                                        </>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+
                     </Box>
                 </Box>
             </Box>
