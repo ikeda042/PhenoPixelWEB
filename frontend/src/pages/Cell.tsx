@@ -77,7 +77,7 @@ export default function Cell() {
     return (
         <div style={{ height: 700, width: '100%' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-                <Stack direction="row" spacing={3}>
+                <Stack direction="row" spacing={3} alignItems="center">
                     <ToggleButtonGroup
                         value={view}
                         exclusive
@@ -111,7 +111,17 @@ export default function Cell() {
                         control={<Checkbox checked={scalebar} onChange={handleScalebarChange} />}
                         label="Scalebar"
                     />
-                    <Button variant="contained" style={{ backgroundColor: 'black', color: 'white' }} href={imageUrl} download>
+                    <Button
+                        variant="contained"
+                        style={{
+                            backgroundColor: 'black',
+                            color: 'white',
+                            height: '40px'
+                        }}
+
+                        href={imageUrl}
+                        download
+                    >
                         Export Image
                     </Button>
                 </Stack>
