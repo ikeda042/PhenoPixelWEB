@@ -39,6 +39,7 @@ const otherSetting = {
 export default function Dbcontents() {
     const { filename } = useParams();
     const [rows, setRows] = useState<RowData[]>([]);
+    const [cellIds, setCellIds] = useState<string[]>([]);
 
     const handleExport = () => {
         const csvData = convertToCSV(rows);
@@ -51,6 +52,7 @@ export default function Dbcontents() {
             .then((data: RowData[]) => {
                 const rowsWithIds = data.map((row: RowData) => ({ id: row.cell_id, ...row }));
                 setRows(rowsWithIds);
+                setCellIds(rowsWithIds.map(row => row.cell_id));
             });
     }, [filename]);
 
@@ -74,6 +76,21 @@ export default function Dbcontents() {
         document.body.removeChild(link);
     };
 
+    const handleExportStats = async () => {
+        const queryString = cellIds.map(id => `cell_ids=${id}`).join('&');
+        const url = `http://10.32.17.15:8000/cellapi/cells/${filename}/stats/csv?${queryString}`;
+
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const csvUrl = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = csvUrl;
+        link.setAttribute('download', `${filename}_stats.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
 
     const columns: GridColDef[] = [
@@ -95,8 +112,11 @@ export default function Dbcontents() {
                     {filename}
                 </Typography>
                 <Box>
+                    <Button variant="contained" onClick={handleExportStats} style={{ marginRight: "5px", backgroundColor: 'black', color: 'white' }} >
+                        統計をCSV出力
+                    </Button>
                     <Button variant="contained" onClick={handleExport} style={{ marginRight: "5px", backgroundColor: 'black', color: 'white' }} >
-                        CSV出力
+                        表をCSV出力
                     </Button>
                     <Button variant="contained" component={RouterLink} to={`/dbcontents/${filename}/overview`} style={{ backgroundColor: 'black', color: 'white' }}>
                         Overview

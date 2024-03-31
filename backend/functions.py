@@ -153,10 +153,10 @@ async def get_cell_stats(dbname:str, cell_id: str) -> CellStats:
         + theta[4]
         for i in x
     ]
-    mean_brightness_raw = np.mean(points_inside_cell_1)
-    mean_brightness_normalized = np.mean([i / max_brightness for i in points_inside_cell_1])
-    median_brightness_raw = np.median(points_inside_cell_1)
-    median_brightness_normalized = np.median([i / max_brightness for i in points_inside_cell_1])
+    mean_brightness_raw = round(np.mean(points_inside_cell_1),2)
+    mean_brightness_normalized = round(np.mean([i / max_brightness for i in points_inside_cell_1]),2)
+    median_brightness_raw = round(np.median(points_inside_cell_1),2)
+    median_brightness_normalized = round( np.median([i / max_brightness for i in points_inside_cell_1]),2)
     return CellStats(basic_cell_info=BasicCellInfo(
         cell_id=cell.cell_id,
         label_experiment=cell.label_experiment,

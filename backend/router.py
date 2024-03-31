@@ -23,6 +23,8 @@ import aiofiles
 import base64
 from io import BytesIO
 from typing import Annotated
+import pandas as pd
+from fastapi.responses import PlainTextResponse
 
 
 # apiの名前を指定してFastAPIのインスタンスを作成
@@ -71,6 +73,54 @@ async def read_cell_stats(db_name: str, cell_ids: list[str] = Query(None)):
         for cell_id in cell_ids:
             res.append(await get_cell_stats(f"./databases/{db_name}.db", cell_id))
     return res
+
+
+
+
+@router_cell.get("/cells/{db_name}/stats/csv",response_class=PlainTextResponse)
+async def read_cell_stats_csv(db_name: str, cell_ids: list[str] = Query(None)):
+    # ここでCSVヘッダーを設定
+    headers = [
+        "cell_id", "label_experiment", "manual_label", "perimeter", "area",
+        "max_brightness", "min_brightness", "mean_brightness_raw",
+        "mean_brightness_normalized", "median_brightness_raw", "median_brightness_normalized"
+    ]
+
+    csv_lines = [",".join(headers)]
+    
+    data = []
+
+    if cell_ids:
+        for cell_id in cell_ids:
+            cell_stats = await get_cell_stats(f"./databases/{db_name}.db", cell_id)
+            print(cell_id)
+            row = [
+                cell_stats.basic_cell_info.cell_id, 
+                cell_stats.basic_cell_info.label_experiment, 
+                str(cell_stats.basic_cell_info.manual_label), 
+                str(cell_stats.basic_cell_info.perimeter), 
+                str(cell_stats.basic_cell_info.area), 
+                str(cell_stats.max_brightness), 
+                str(cell_stats.min_brightness), 
+                str(cell_stats.mean_brightness_raw), 
+                str(cell_stats.mean_brightness_normalized), 
+                str(cell_stats.median_brightness_raw), 
+                str(cell_stats.median_brightness_normalized)
+            ]
+            data.append(row)
+
+
+    df = pd.DataFrame(data, columns=headers)
+    csv_data = df.to_csv(index=False)
+
+    return PlainTextResponse(
+        content=csv_data,
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={db_name}_cell_stats.csv"},
+    )
+
+   
+
 
 @router_cell.get("/cells/{db_name}/cell/{cell_id}/ph")
 async def read_cell_ph(db_name: str, cell_id: str,draw_scale_bar: bool = Query(default=True)):
