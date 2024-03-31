@@ -133,7 +133,7 @@ export default function Cell() {
                                         <TableCell align='center'>{cellStats?.basic_cell_info.perimeter} / {cellStats?.basic_cell_info.area}</TableCell>
                                     </TableRow>
 
-                                    {view === 'ph' ? (
+                                    {view === 'ph' || view === 'phcontour' ? (
                                         <>
                                             <TableRow>
                                                 <TableCell >最大位相差輝度</TableCell>
