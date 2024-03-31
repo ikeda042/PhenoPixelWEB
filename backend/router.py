@@ -55,6 +55,7 @@ async def read_cell_db(db_name: str):
         path=f"./databases/{db_name}.db",
         headers={"Content-Disposition": f"attachment; filename={db_name}.db"},
     )
+
 @router_cell.get("/cells/databases", response_model=list[DBInfo])
 async def read_cell_dbs():
     loop = asyncio.get_event_loop()
