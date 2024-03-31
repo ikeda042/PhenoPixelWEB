@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { DataGrid, GridColDef, GridRenderCellParams, } from '@mui/x-data-grid';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
@@ -9,6 +9,8 @@ import { Box } from '@mui/system';
 import Grid from '@mui/material/Unstable_Grid2';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
+import { ScatterChart } from '@mui/x-charts/ScatterChart';
+import { axisClasses } from '@mui/x-charts/ChartsAxis';
 
 type RowData = {
     cell_id: string;
@@ -18,6 +20,18 @@ type RowData = {
     area: number;
     [key: string]: string | number;
 };
+
+const otherSetting = {
+    yAxis: [{ label: ' Area (µm^2)' }],
+    xAxis: [{ label: 'Perimeter (µm)' }],
+    grid: { horizontal: true },
+    sx: {
+        [`& .${axisClasses.left} .${axisClasses.label}`]: {
+            transform: 'translateX(-30px)',
+        },
+    },
+};
+
 
 
 
@@ -89,6 +103,19 @@ export default function Dbcontents() {
                     </Button>
                 </Box>
             </Box>
+            <Grid container spacing={4} margin={5}>
+                <ScatterChart
+                    width={600}
+                    height={400}
+                    series={[
+                        {
+                            label: 'Perimeter vs Area',
+                            data: rows.map((row) => ({ x: row.perimeter, y: row.area, id: row.cell_id })),
+                        },
+                    ]}
+                    {...otherSetting}
+                />
+            </Grid>
             <Grid container spacing={4} margin={5}>
                 <DataGrid
                     rows={rows}
