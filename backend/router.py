@@ -80,13 +80,17 @@ async def read_one_cell_stats(db_name: str, cell_id: str):
 
 
 
+
+
 @router_cell.get("/cells/{db_name}/stats/csv",response_class=PlainTextResponse)
 async def read_cell_stats_csv(db_name: str, cell_ids: list[str] = Query(None)):
     # ここでCSVヘッダーを設定
     headers = [
         "cell_id", "label_experiment", "manual_label", "perimeter", "area",
         "max_brightness", "min_brightness", "mean_brightness_raw",
-        "mean_brightness_normalized", "median_brightness_raw", "median_brightness_normalized"
+        "mean_brightness_normalized", "median_brightness_raw", "median_brightness_normalized",
+        "ph_max_brightness", "ph_min_brightness", "ph_mean_brightness_raw",
+        "ph_mean_brightness_normalized", "ph_median_brightness_raw", "ph_median_brightness_normalized"
     ]
 
     csv_lines = [",".join(headers)]
@@ -95,7 +99,7 @@ async def read_cell_stats_csv(db_name: str, cell_ids: list[str] = Query(None)):
 
     if cell_ids:
         for cell_id in cell_ids:
-            cell_stats = await get_cell_stats(f"./databases/{db_name}.db", cell_id)
+            cell_stats = await get_cell_stats(f"./databases/{db_name}.db", cell_id,include_ph=True)
             print(cell_id)
             row = [
                 cell_stats.basic_cell_info.cell_id, 
@@ -108,7 +112,13 @@ async def read_cell_stats_csv(db_name: str, cell_ids: list[str] = Query(None)):
                 str(cell_stats.mean_brightness_raw), 
                 str(cell_stats.mean_brightness_normalized), 
                 str(cell_stats.median_brightness_raw), 
-                str(cell_stats.median_brightness_normalized)
+                str(cell_stats.median_brightness_normalized),
+                str(cell_stats.ph_max_brightness),
+                str(cell_stats.ph_min_brightness),
+                str(cell_stats.ph_mean_brightness_raw),
+                str(cell_stats.ph_mean_brightness_normalized),
+                str(cell_stats.ph_median_brightness_raw),
+                str(cell_stats.ph_median_brightness_normalized)
             ]
             data.append(row)
 
