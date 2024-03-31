@@ -140,7 +140,8 @@ export default function Dbcontents() {
                 <DataGrid
                     rows={rows}
                     columns={columns}
-                    hideFooterPagination
+                    autoHeight
+                    pagination
                 />
             </Grid>
         </div>
