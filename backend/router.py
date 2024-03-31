@@ -111,18 +111,21 @@ async def read_cell_fluo5(db_name: str, cell_id: str,draw_scale_bar: bool = Quer
         await afp.write(buffer)
     return StreamingResponse(open("temp_fluo5.png", "rb"), media_type="image/png")
 
+
 @app.get("/cells/{db_name}/overview/cell/{cell_id}")
 async def read_cell_for_overview(db_name: str, cell_id: str, draw_scale_bar: bool = Query(default=True)):
     cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
     image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
     image_fluo = cv2.convertScaleAbs(image_fluo, alpha=2, beta=0)
+    contour = await get_cell_contour(f"./databases/{db_name}.db", cell_id)
+    cv2.drawContours(image_fluo,pickle.loads(contour),-1,(0,255,0),1)
     if draw_scale_bar:
         image_fluo = await draw_scale_bar_with_centered_text(image_fluo)
     _, buffer = cv2.imencode(".png", image_fluo)
     base64_image = base64.b64encode(buffer).decode("utf-8")
     return {"image": base64_image}
 
-    
+
 @router_cell.get("/cells/{db_name}/cell/{cell_id}/fluocontour")
 async def read_cell_fluo_contour(db_name: str, cell_id: str,draw_scale_bar: bool = Query(default=True)):
     cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
