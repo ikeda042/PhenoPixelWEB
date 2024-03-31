@@ -115,7 +115,7 @@ async def read_cell_fluo5(db_name: str, cell_id: str,draw_scale_bar: bool = Quer
 async def read_cell_for_overview(db_name: str, cell_id: str, draw_scale_bar: bool = Query(default=True)):
     cell: bytes = await get_cell_fluo(f"./databases/{db_name}.db", cell_id)
     image_fluo = cv2.imdecode(np.frombuffer(cell, dtype=np.uint8), cv2.IMREAD_COLOR)
-    image_fluo = cv2.convertScaleAbs(image_fluo, alpha=5, beta=0)
+    image_fluo = cv2.convertScaleAbs(image_fluo, alpha=2, beta=0)
     if draw_scale_bar:
         image_fluo = await draw_scale_bar_with_centered_text(image_fluo)
     _, buffer = cv2.imencode(".png", image_fluo)
