@@ -13,6 +13,9 @@ import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Stack } from '@mui/material';
 import { FormControlLabel, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 
 
 type CellStats = {
@@ -42,6 +45,7 @@ export default function Cell() {
     const [view, setView] = useState('ph');
     const [scalebar, setScalebar] = useState(false);
     const [cellStats, setCellStats] = useState<CellStats | null>(null);
+    const navigate = useNavigate();
 
 
     const handleView = (event: React.MouseEvent<HTMLElement>, newView: string) => {
@@ -63,6 +67,9 @@ export default function Cell() {
 
     return (
         <div style={{ height: 700, width: '100%' }}>
+            <Grid container justifyContent="flex-start" alignItems="center" style={{ padding: '5px' }}>
+                <Button startIcon={<ArrowBackIcon />} variant="contained" onClick={() => navigate(-1)} style={{ backgroundColor: 'black', color: 'white' }}>戻る</Button>
+            </Grid>
             <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
                 <Stack direction="row" spacing={3} alignItems="center">
                     <ToggleButtonGroup
@@ -195,6 +202,6 @@ export default function Cell() {
                     </Box>
                 </Box>
             </Box>
-        </div>
+        </div >
     );
 }
