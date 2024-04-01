@@ -25,7 +25,6 @@ const useLazyLoad = (ref: React.RefObject<HTMLImageElement>, src: string): void 
                 observer.disconnect();
             }
         });
-
         if (ref.current) {
             observer.observe(ref.current);
         }
