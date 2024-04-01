@@ -23,8 +23,8 @@ type RowData = {
 };
 
 const otherSetting = {
-    yAxis: [{ label: ' Area (µm^2)' }],
-    xAxis: [{ label: 'Perimeter (µm)' }],
+    yAxis: [{ label: ' Area (px^2)' }],
+    xAxis: [{ label: 'Perimeter (px)' }],
     grid: { horizontal: true },
     sx: {
         [`& .${axisClasses.left} .${axisClasses.label}`]: {
@@ -105,8 +105,8 @@ export default function Dbcontents() {
         },
         { field: 'label_experiment', headerName: 'Label Experiment', width: 200, align: 'center', headerAlign: 'center' },
         { field: 'manual_label', headerName: 'Manual Label', width: 200, align: 'center', headerAlign: 'center' },
-        { field: 'perimeter', headerName: 'Perimeter (µm)', width: 200, align: 'center', headerAlign: 'center' },
-        { field: 'area', headerName: 'Area (µm^2)', width: 200, align: 'center', headerAlign: 'center' }
+        { field: 'perimeter', headerName: 'Perimeter (px)', width: 200, align: 'center', headerAlign: 'center' },
+        { field: 'area', headerName: 'Area (px^2)', width: 200, align: 'center', headerAlign: 'center' }
     ];
 
     return (

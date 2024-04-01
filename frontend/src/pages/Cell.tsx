@@ -1,20 +1,16 @@
 
 import * as React from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import Link from '@mui/material/Link';
-import { Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
-import Grid from '@mui/material/Unstable_Grid2';
 import SquareImage from '../components/Squareimage';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Stack } from '@mui/material';
 import { FormControlLabel, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 
 
 
@@ -67,9 +63,7 @@ export default function Cell() {
 
     return (
         <div style={{ height: 700, width: '100%' }}>
-            <Grid container justifyContent="flex-start" alignItems="center" style={{ padding: '5px' }}>
-                <Button startIcon={<ArrowBackIcon />} variant="contained" onClick={() => navigate(-1)} style={{ backgroundColor: 'black', color: 'white' }}>戻る</Button>
-            </Grid>
+
             <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
                 <Stack direction="row" spacing={3} alignItems="center">
                     <ToggleButtonGroup
@@ -136,7 +130,7 @@ export default function Cell() {
                                         <TableCell align='center'>{filename} / {cellId}</TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell >周囲長 (µm) / 面積 (µm^2)</TableCell>
+                                        <TableCell >周囲長 (px) / 面積 (px^2)</TableCell>
                                         <TableCell align='center'>{cellStats?.basic_cell_info.perimeter} / {cellStats?.basic_cell_info.area}</TableCell>
                                     </TableRow>
 
