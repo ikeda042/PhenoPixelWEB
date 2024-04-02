@@ -10,13 +10,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';  // I
 import React, { useEffect, useState } from 'react';
 import Cell from './pages/Cell'
 import DbcontentsOverview from './pages/Cellsoverview';
-
+import { settings } from './settings';
 
 function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://10.32.17.15:8000/cellapi/cells/databases')
+    fetch(`${settings.url_prefix}/cellapi/cells/databases`)
       .then(response => response.json())
       .then(data => setData(data));
   }, []);
