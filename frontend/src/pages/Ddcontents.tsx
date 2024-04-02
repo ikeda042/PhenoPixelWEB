@@ -12,6 +12,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ScatterChart } from '@mui/x-charts/ScatterChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import { CircularProgress } from '@mui/material';
+import { settings } from '../settings';
 
 type RowData = {
     cell_id: string;
@@ -49,7 +50,7 @@ export default function Dbcontents() {
     };
 
     useEffect(() => {
-        fetch(`http://10.32.17.15:8000/cellapi/cells/databases/${filename}`)
+        fetch(`${settings.url_prefix}/cellapi/cells/databases/${filename}`)
             .then(response => response.json())
             .then((data: RowData[]) => {
                 const rowsWithIds = data.map((row: RowData) => ({ id: row.cell_id, ...row }));
@@ -81,7 +82,7 @@ export default function Dbcontents() {
     const handleExportStats = async () => {
         setIsLoading(true);
         const queryString = cellIds.map(id => `cell_ids=${id}`).join('&');
-        const url = `http://10.32.17.15:8000/cellapi/cells/${filename}/stats/csv?${queryString}`;
+        const url = `${settings.url_prefix}/cellapi/cells/${filename}/stats/csv?${queryString}`;
 
         const response = await fetch(url);
         const blob = await response.blob();

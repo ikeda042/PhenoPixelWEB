@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { GridRenderCellParams, GridColDef } from '@mui/x-data-grid';
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
+import { settings } from '../settings';
 
 interface DBTableProps {
     data: { file_name: string; cell_count: number }[];
@@ -36,7 +37,7 @@ export default function DBtable({ data }: DBTableProps) {
                     style={{ backgroundColor: 'black', color: 'white' }}
                     onClick={() => {
                         const dbName = (params.row.file_name as string).split('.')[0];
-                        window.open(`http://10.32.17.15:8000/cellapi/cells/databases/${dbName}/sqliteexport`, '_blank');
+                        window.open(`${settings.url_prefix}/cellapi/cells/databases/${dbName}/sqliteexport`, '_blank');
                     }}
                 >
                     Export
