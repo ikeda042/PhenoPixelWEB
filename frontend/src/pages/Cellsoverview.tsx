@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Box, Grid, Link as MuiLink, CircularProgress } from '@mui/material';
+import { settings } from '../settings';
 
 interface Cell {
     cell_id: string;
@@ -49,11 +50,11 @@ const DbcontentsOverview: React.FC = () => {
         const fetchImages = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://10.32.17.15:8000/cellapi/cells/databases/${filename}`);
+                const response = await fetch(`${settings.url_prefix}/cellapi/cells/databases/${filename}`);
                 const cells: Cell[] = await response.json();
 
                 const images: Image[] = await Promise.all(cells.map(async (cell: Cell) => {
-                    const imageResponse = await fetch(`http://10.32.17.15:8000/cells/${filename}/overview/cell/${cell.cell_id}?draw_scale_bar=true`);
+                    const imageResponse = await fetch(`${settings.url_prefix}/cells/${filename}/overview/cell/${cell.cell_id}?draw_scale_bar=true`);
                     const imageData = await imageResponse.json();
                     return { cellId: cell.cell_id, src: `data:image/png;base64,${imageData.image}` };
                 }));

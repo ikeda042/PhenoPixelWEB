@@ -10,7 +10,7 @@ import { Stack } from '@mui/material';
 import { FormControlLabel, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
+import { settings } from '../settings';
 
 
 
@@ -53,13 +53,13 @@ export default function Cell() {
     };
 
     useEffect(() => {
-        fetch(`http://10.32.17.15:8000/cellapi/cells/${filename}/cells/${cellId}/stats`)
+        fetch(`${settings.url_prefix}/cellapi/cells/${filename}/cells/${cellId}/stats`)
             .then(response => response.json())
             .then(data => setCellStats(data));
     }, [filename, cellId]);
 
 
-    const imageUrl = `http://10.32.17.15:8000/cellapi/cells/${filename}/cell/${cellId}/${view}?draw_scale_bar=${scalebar}`;
+    const imageUrl = `${settings.url_prefix}/cellapi/cells/${filename}/cell/${cellId}/${view}?draw_scale_bar=${scalebar}`;
 
     return (
         <div style={{ height: 700, width: '100%' }}>
