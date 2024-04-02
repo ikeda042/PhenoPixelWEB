@@ -11,7 +11,7 @@ import asyncio
 from schemas import BasicCellInfo, CellStats, CellDBAll
 from database import get_cell_all
 
-executor = ThreadPoolExecutor(max_workers=1)
+executor = ThreadPoolExecutor(max_workers=8)
 
 async def save_fig_async(fig, filename):
     loop = asyncio.get_event_loop()
