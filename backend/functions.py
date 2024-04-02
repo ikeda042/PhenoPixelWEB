@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 from numpy.linalg import eig
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 import pickle
 from numpy.linalg import inv
 from concurrent.futures import ThreadPoolExecutor
